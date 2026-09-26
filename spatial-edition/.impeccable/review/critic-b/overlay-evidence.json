@@ -1,0 +1,1532 @@
+{
+  "preflight": true,
+  "scriptInjected": 1,
+  "messages": [
+    "%c[impeccable] 25 anti-patterns found color: oklch(84% 0.19 80.46); font-weight: bold",
+    "%c[impeccable] 25 anti-patterns found color: oklch(84% 0.19 80.46); font-weight: bold",
+    "%c[impeccable] 31 anti-patterns found color: oklch(84% 0.19 80.46); font-weight: bold",
+    "%c[impeccable] 38 anti-patterns found color: oklch(84% 0.19 80.46); font-weight: bold",
+    "%c[impeccable] 41 anti-patterns found color: oklch(84% 0.19 80.46); font-weight: bold"
+  ],
+  "scans": [
+    {
+      "surface": "collection",
+      "findings": [
+        {
+          "element": "DIV.spatial-app   is-ready",
+          "text": "Skip to artifact controlsPLAY / BACK®AN EXHIBITION OF PLAY1995 — 1998Collection06AboutSMALL DISCS. E",
+          "findings": [
+            {
+              "type": "clipped-overflow-container",
+              "detail": "div.spatial-app.is-ready clips a positioned child"
+            }
+          ]
+        },
+        {
+          "element": "IMG.",
+          "text": "",
+          "findings": [
+            {
+              "type": "buried-raster",
+              "detail": "<img> at opacity 0.105"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.header-center",
+          "text": "AN EXHIBITION OF PLAY1995 — 1998",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "8px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.13em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "1995 — 1998",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"1995 — 1998\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DIV.exhibit-note",
+          "text": "SMALL DISCS. ENTIRE WORLDS.",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "8px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.10em on body text"
+            }
+          ]
+        },
+        {
+          "element": "I.",
+          "text": "/ 06",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            }
+          ]
+        },
+        {
+          "element": "DIV.gallery-stage",
+          "text": "INSPECT",
+          "findings": [
+            {
+              "type": "clipped-overflow-container",
+              "detail": "div.gallery-stage clips a positioned child"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "INSPECT",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "8px functional text \"INSPECT\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "Ø 120 MMA WORLD YOU COULD HOLD.",
+          "findings": [
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.06em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "STUDIO LIGHTCHANGE THE ATMOSPHERE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"STUDIO LIGHT\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.06em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SMALL.",
+          "text": "CHANGE THE ATMOSPHERE",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            },
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"CHANGE THE ATMOSPHERE\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.08em on body text"
+            }
+          ]
+        },
+        {
+          "element": "DIV.artifact-id",
+          "text": "1998KonamiSLPM-86114",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            },
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"Konami\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "1998",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"1998\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.catalog-id",
+          "text": "SLPM-86114",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"SLPM-86114\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "BUTTON.inspect-action",
+          "text": "Inspect the disc",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Inspect the disc\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "BUTTON.world-action",
+          "text": "Enter its world",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Enter its world\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": " DRAG TO DISCOVER",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"DRAG TO DISCOVER\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.footer-note",
+          "text": "PHYSICAL MEDIA. LASTING MEMORIES.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6.5px functional text \"PHYSICAL MEDIA. LASTING MEMORIES.\" (below 10px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.07em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "01",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"01\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "02",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"02\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "03",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"03\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "04",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"04\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "05",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"05\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "06",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"06\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.footer-end",
+          "text": "HANDLE WITH MEMORIES.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6.5px functional text \"HANDLE WITH MEMORIES.\" (below 10px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.07em on body text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "inspection",
+      "findings": [
+        {
+          "element": "DIV.spatial-app is-detail  is-ready",
+          "text": "Skip to artifact controlsPLAY / BACK®AN EXHIBITION OF PLAY1995 — 1998Collection06AboutTHE ARTIFACT, ",
+          "findings": [
+            {
+              "type": "clipped-overflow-container",
+              "detail": "div.spatial-app.is-detail.is-ready clips a positioned child"
+            }
+          ]
+        },
+        {
+          "element": "IMG.",
+          "text": "",
+          "findings": [
+            {
+              "type": "buried-raster",
+              "detail": "<img> at opacity 0.105"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.header-center",
+          "text": "AN EXHIBITION OF PLAY1995 — 1998",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "8px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.13em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "1995 — 1998",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"1995 — 1998\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DIV.exhibit-note",
+          "text": "THE ARTIFACT, UP CLOSE",
+          "findings": [
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.10em on body text"
+            }
+          ]
+        },
+        {
+          "element": "I.",
+          "text": "/ 06",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            }
+          ]
+        },
+        {
+          "element": "BUTTON.back-button",
+          "text": " Back to the collection",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Back to the collection\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "TURN",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "8px functional text \"TURN\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "Ø 120 MMA WORLD YOU COULD HOLD.",
+          "findings": [
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.06em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "STUDIO LIGHTCHANGE THE ATMOSPHERE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"STUDIO LIGHT\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.06em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SMALL.",
+          "text": "CHANGE THE ATMOSPHERE",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            },
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"CHANGE THE ATMOSPHERE\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.08em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.detail-serial",
+          "text": "NTSC-JSLPM-86114",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "8px functional text \"NTSC-JSLPM-86114\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "P.",
+          "text": "Footsteps in the snow. A voice in your ear. One soldier against the secrets of Shadow Moses. Hideo K",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            }
+          ]
+        },
+        {
+          "element": "DT.",
+          "text": "RELEASE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"RELEASE\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DD.",
+          "text": "1998",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"1998\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DT.",
+          "text": "STUDIO",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"STUDIO\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DD.",
+          "text": "Konami",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"Konami\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DT.",
+          "text": "GENRE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"GENRE\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DD.",
+          "text": "Tactical espionage",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"Tactical espionage\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.preview-caption",
+          "text": "ORIGINAL CAPTURES & ARCHIVAL FILMS",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"ORIGINAL CAPTURES & ARCHIVAL FILMS\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.08em on body text"
+            }
+          ]
+        },
+        {
+          "element": "BUTTON.flip-button",
+          "text": "Turn it overF",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Turn it over\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "MOVE TO CATCH THE LIGHT",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "6px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.09em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.footer-note",
+          "text": "PHYSICAL MEDIA. LASTING MEMORIES.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6.5px functional text \"PHYSICAL MEDIA. LASTING MEMORIES.\" (below 10px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.07em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "01",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"01\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "02",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"02\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "03",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"03\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "04",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"04\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "05",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"05\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "06",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"06\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.footer-end",
+          "text": "HANDLE WITH MEMORIES.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6.5px functional text \"HANDLE WITH MEMORIES.\" (below 10px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.07em on body text"
+            }
+          ]
+        },
+        {
+          "element": "BODY.",
+          "text": "Skip to artifact controlsPLAY / BACK®AN EXHIBITION OF PLAY1995 — 1998Collection06AboutTHE ARTIFACT, ",
+          "findings": [
+            {
+              "type": "kicker-above-heading",
+              "detail": "kicker \"NTSC-J SLPM-86114\" above h1 \"Metal Gear Solid\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "film",
+      "findings": [
+        {
+          "element": "DIV.spatial-app is-detail  is-ready",
+          "text": "Skip to artifact controlsPLAY / BACK®AN EXHIBITION OF PLAY1995 — 1998Collection06AboutTHE ARTIFACT, ",
+          "findings": [
+            {
+              "type": "clipped-overflow-container",
+              "detail": "div.spatial-app.is-detail.is-ready clips a positioned child"
+            }
+          ]
+        },
+        {
+          "element": "IMG.",
+          "text": "",
+          "findings": [
+            {
+              "type": "buried-raster",
+              "detail": "<img> at opacity 0.105"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.header-center",
+          "text": "AN EXHIBITION OF PLAY1995 — 1998",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "8px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.13em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "1995 — 1998",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"1995 — 1998\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DIV.exhibit-note",
+          "text": "THE ARTIFACT, UP CLOSE",
+          "findings": [
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.10em on body text"
+            }
+          ]
+        },
+        {
+          "element": "I.",
+          "text": "/ 06",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            }
+          ]
+        },
+        {
+          "element": "BUTTON.back-button",
+          "text": " Back to the collection",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Back to the collection\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "TURN",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "8px functional text \"TURN\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "Ø 120 MMA WORLD YOU COULD HOLD.",
+          "findings": [
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.06em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "STUDIO LIGHTCHANGE THE ATMOSPHERE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"STUDIO LIGHT\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.06em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SMALL.",
+          "text": "CHANGE THE ATMOSPHERE",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            },
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"CHANGE THE ATMOSPHERE\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.08em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.detail-serial",
+          "text": "NTSC-JSLPM-86114",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "8px functional text \"NTSC-JSLPM-86114\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "P.",
+          "text": "Footsteps in the snow. A voice in your ear. One soldier against the secrets of Shadow Moses. Hideo K",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            }
+          ]
+        },
+        {
+          "element": "DT.",
+          "text": "RELEASE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"RELEASE\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DD.",
+          "text": "1998",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"1998\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DT.",
+          "text": "STUDIO",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"STUDIO\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DD.",
+          "text": "Konami",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"Konami\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DT.",
+          "text": "GENRE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"GENRE\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DD.",
+          "text": "Tactical espionage",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"Tactical espionage\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.preview-caption",
+          "text": "ORIGINAL CAPTURES & ARCHIVAL FILMS",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"ORIGINAL CAPTURES & ARCHIVAL FILMS\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.08em on body text"
+            }
+          ]
+        },
+        {
+          "element": "BUTTON.flip-button",
+          "text": "Turn it overF",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Turn it over\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "MOVE TO CATCH THE LIGHT",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "6px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.09em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.footer-note",
+          "text": "PHYSICAL MEDIA. LASTING MEMORIES.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6.5px functional text \"PHYSICAL MEDIA. LASTING MEMORIES.\" (below 10px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.07em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "01",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"01\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "02",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"02\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "03",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"03\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "04",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"04\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "05",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"05\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "06",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"06\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.footer-end",
+          "text": "HANDLE WITH MEMORIES.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6.5px functional text \"HANDLE WITH MEMORIES.\" (below 10px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.07em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "PLAY / BACK  THE MEMORY ROOM",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "8px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.08em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.memory-game",
+          "text": "Metal Gear Solid — 1998",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "10px body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "RETURN TO THE DISC",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"RETURN TO THE DISC\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "Sound off",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Sound off\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "archival trailer · original archive",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"archival trailer · original archive\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "Presented in its original aspect ratio",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Presented in its original aspect ratio\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "ARCHIVAL TRAILER",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"ARCHIVAL TRAILER\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "BODY.",
+          "text": "Skip to artifact controlsPLAY / BACK®AN EXHIBITION OF PLAY1995 — 1998Collection06AboutTHE ARTIFACT, ",
+          "findings": [
+            {
+              "type": "kicker-above-heading",
+              "detail": "kicker \"NTSC-J SLPM-86114\" above h1 \"Metal Gear Solid\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "captures",
+      "findings": [
+        {
+          "element": "DIV.spatial-app is-detail  is-ready",
+          "text": "Skip to artifact controlsPLAY / BACK®AN EXHIBITION OF PLAY1995 — 1998Collection06AboutTHE ARTIFACT, ",
+          "findings": [
+            {
+              "type": "clipped-overflow-container",
+              "detail": "div.spatial-app.is-detail.is-ready clips a positioned child"
+            }
+          ]
+        },
+        {
+          "element": "IMG.",
+          "text": "",
+          "findings": [
+            {
+              "type": "buried-raster",
+              "detail": "<img> at opacity 0.105"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.header-center",
+          "text": "AN EXHIBITION OF PLAY1995 — 1998",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "8px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.13em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "1995 — 1998",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"1995 — 1998\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DIV.exhibit-note",
+          "text": "THE ARTIFACT, UP CLOSE",
+          "findings": [
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.10em on body text"
+            }
+          ]
+        },
+        {
+          "element": "I.",
+          "text": "/ 06",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            }
+          ]
+        },
+        {
+          "element": "BUTTON.back-button",
+          "text": " Back to the collection",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Back to the collection\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "TURN",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "8px functional text \"TURN\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "Ø 120 MMA WORLD YOU COULD HOLD.",
+          "findings": [
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.06em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "STUDIO LIGHTCHANGE THE ATMOSPHERE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"STUDIO LIGHT\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.06em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SMALL.",
+          "text": "CHANGE THE ATMOSPHERE",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            },
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"CHANGE THE ATMOSPHERE\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.08em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.detail-serial",
+          "text": "NTSC-JSLPM-86114",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "8px functional text \"NTSC-JSLPM-86114\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "P.",
+          "text": "Footsteps in the snow. A voice in your ear. One soldier against the secrets of Shadow Moses. Hideo K",
+          "findings": [
+            {
+              "type": "low-contrast",
+              "detail": "4.2:1 (need 4.5:1) — text #536360 on #cdd3d1"
+            }
+          ]
+        },
+        {
+          "element": "DT.",
+          "text": "RELEASE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"RELEASE\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DD.",
+          "text": "1998",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"1998\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DT.",
+          "text": "STUDIO",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"STUDIO\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DD.",
+          "text": "Konami",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"Konami\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DT.",
+          "text": "GENRE",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"GENRE\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DD.",
+          "text": "Tactical espionage",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"Tactical espionage\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.preview-caption",
+          "text": "ORIGINAL CAPTURES & ARCHIVAL FILMS",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"ORIGINAL CAPTURES & ARCHIVAL FILMS\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.08em on body text"
+            }
+          ]
+        },
+        {
+          "element": "BUTTON.flip-button",
+          "text": "Turn it overF",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"Turn it over\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "MOVE TO CATCH THE LIGHT",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "6px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.09em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.footer-note",
+          "text": "PHYSICAL MEDIA. LASTING MEMORIES.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6.5px functional text \"PHYSICAL MEDIA. LASTING MEMORIES.\" (below 10px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.07em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "01",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"01\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "02",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"02\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "03",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"03\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "04",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"04\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "05",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"05\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "06",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"06\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.footer-end",
+          "text": "HANDLE WITH MEMORIES.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6.5px functional text \"HANDLE WITH MEMORIES.\" (below 10px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.07em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "PLAY / BACK  THE MEMORY ROOM",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "8px body text"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.08em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.memory-game",
+          "text": "Metal Gear Solid — 1998",
+          "findings": [
+            {
+              "type": "tiny-text",
+              "detail": "10px body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "RETURN TO THE DISC",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"RETURN TO THE DISC\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "DIV.memory-light",
+          "text": "",
+          "findings": [
+            {
+              "type": "radial-spotlight-glow",
+              "detail": "radial-gradient spotlight glow \"memory-light\" (#d5e7ff a0.09 → transparent) on 1181x657 surface"
+            }
+          ]
+        },
+        {
+          "element": "DIV.memory-side-note",
+          "text": "A PLACE YOU CAN STILL REMEMBER.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"A PLACE YOU CAN STILL REMEMBER.\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.13em on body text"
+            }
+          ]
+        },
+        {
+          "element": "P.",
+          "text": "The moment a game knew you were on the other side of the screen.",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"The moment a game knew you were on the o\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "/ 03",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "10px functional text \"/ 03\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "I.",
+          "text": "ORIGINALPLAYSTATION CAPTURES",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "6px functional text \"ORIGINALPLAYSTATION CAPTURES\" (below 11px floor)"
+            },
+            {
+              "type": "wide-tracking",
+              "detail": "letter-spacing: 0.10em on body text"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "FRAME 01",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "7px functional text \"FRAME 01\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "SPAN.",
+          "text": "Autoplay frames",
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "detail": "9px functional text \"Autoplay frames\" (below 11px floor)"
+            }
+          ]
+        },
+        {
+          "element": "BODY.",
+          "text": "Skip to artifact controlsPLAY / BACK®AN EXHIBITION OF PLAY1995 — 1998Collection06AboutTHE ARTIFACT, ",
+          "findings": [
+            {
+              "type": "kicker-above-heading",
+              "detail": "kicker \"NTSC-J SLPM-86114\" above h1 \"Metal Gear Solid\""
+            },
+            {
+              "type": "repeating-stripes-gradient",
+              "detail": "repeating-gradient decorative stripes"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Headless Chromium overlay injection verified. No user-visible Human tab is provided by this environment. WebGL fallback used for overlay-only scan; actual WebGL layout inspected separately."
+}

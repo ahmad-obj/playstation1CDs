@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "src": "http://localhost:5174/films/ridge-racer.mp4",
+      "time": 0.852468,
+      "playing": true
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "player": {
+        "x": 66.796875,
+        "y": -3.375,
+        "w": 350.390625,
+        "h": 267.734375
+      }
+    },
+    {
+      "next": "Tekken 3"
+    }
+  ],
+  "errors": []
+}

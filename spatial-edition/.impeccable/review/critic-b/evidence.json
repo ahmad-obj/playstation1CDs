@@ -1,0 +1,461 @@
+{
+  "desktop": {
+    "viewport": [
+      1440,
+      900
+    ],
+    "overflow": false,
+    "stage": {
+      "x": 0,
+      "y": 110,
+      "width": 1440,
+      "height": 593,
+      "top": 110,
+      "right": 1440,
+      "bottom": 703,
+      "left": 0
+    }
+  },
+  "idleRaf": 0,
+  "leftDisc": {
+    "title": "Final Fantasy VII",
+    "detail": false
+  },
+  "preBack": {
+    "url": "http://localhost:5174/#game/metal-gear-solid",
+    "memory": 1
+  },
+  "postBack": {
+    "url": "http://localhost:5174/",
+    "memory": 1,
+    "detail": false
+  },
+  "focusAfterEscape": {
+    "tag": "BUTTON",
+    "text": "Enter its world"
+  },
+  "panelRaf": 1,
+  "viewport-844": {
+    "scrollHeight": 700,
+    "viewHeight": 390,
+    "controls": [
+      {
+        "text": "Inspect the disc",
+        "rect": {
+          "x": 29.53125,
+          "y": 570,
+          "width": 98.625,
+          "height": 35,
+          "top": 570,
+          "right": 128.15625,
+          "bottom": 605,
+          "left": 29.53125
+        }
+      },
+      {
+        "text": "Enter its world",
+        "rect": {
+          "x": 152.15625,
+          "y": 570,
+          "width": 106.78125,
+          "height": 35,
+          "top": 570,
+          "right": 258.9375,
+          "bottom": 605,
+          "left": 152.15625
+        }
+      },
+      {
+        "text": "Previous game",
+        "rect": {
+          "x": 714.46875,
+          "y": 548,
+          "width": 45,
+          "height": 45,
+          "top": 548,
+          "right": 759.46875,
+          "bottom": 593,
+          "left": 714.46875
+        }
+      },
+      {
+        "text": "Next game",
+        "rect": {
+          "x": 769.46875,
+          "y": 548,
+          "width": 45,
+          "height": 45,
+          "top": 548,
+          "right": 814.46875,
+          "bottom": 593,
+          "left": 769.46875
+        }
+      },
+      {
+        "text": "Select Final Fantasy VII",
+        "rect": {
+          "x": 265,
+          "y": 625.5,
+          "width": 44,
+          "height": 62,
+          "top": 625.5,
+          "right": 309,
+          "bottom": 687.5,
+          "left": 265
+        }
+      },
+      {
+        "text": "Select Metal Gear Solid",
+        "rect": {
+          "x": 319,
+          "y": 625.5,
+          "width": 44,
+          "height": 62,
+          "top": 625.5,
+          "right": 363,
+          "bottom": 687.5,
+          "left": 319
+        }
+      },
+      {
+        "text": "Select R4: Ridge Racer Type 4",
+        "rect": {
+          "x": 373,
+          "y": 625.5,
+          "width": 44,
+          "height": 62,
+          "top": 625.5,
+          "right": 417,
+          "bottom": 687.5,
+          "left": 373
+        }
+      },
+      {
+        "text": "Select Tekken 3",
+        "rect": {
+          "x": 427,
+          "y": 625.5,
+          "width": 44,
+          "height": 62,
+          "top": 625.5,
+          "right": 471,
+          "bottom": 687.5,
+          "left": 427
+        }
+      },
+      {
+        "text": "Select WipEout",
+        "rect": {
+          "x": 481,
+          "y": 625.5,
+          "width": 44,
+          "height": 62,
+          "top": 625.5,
+          "right": 525,
+          "bottom": 687.5,
+          "left": 481
+        }
+      },
+      {
+        "text": "Select Resident Evil 2",
+        "rect": {
+          "x": 535,
+          "y": 625.5,
+          "width": 44,
+          "height": 62,
+          "top": 625.5,
+          "right": 579,
+          "bottom": 687.5,
+          "left": 535
+        }
+      }
+    ]
+  },
+  "viewport-1024": {
+    "scrollHeight": 700,
+    "viewHeight": 600,
+    "controls": [
+      {
+        "text": "Inspect the disc",
+        "rect": {
+          "x": 35.828125,
+          "y": 470,
+          "width": 98.625,
+          "height": 35,
+          "top": 470,
+          "right": 134.453125,
+          "bottom": 505,
+          "left": 35.828125
+        }
+      },
+      {
+        "text": "Enter its world",
+        "rect": {
+          "x": 158.453125,
+          "y": 470,
+          "width": 106.78125,
+          "height": 35,
+          "top": 470,
+          "right": 265.234375,
+          "bottom": 505,
+          "left": 158.453125
+        }
+      },
+      {
+        "text": "Previous game",
+        "rect": {
+          "x": 888.171875,
+          "y": 448,
+          "width": 45,
+          "height": 45,
+          "top": 448,
+          "right": 933.171875,
+          "bottom": 493,
+          "left": 888.171875
+        }
+      },
+      {
+        "text": "Next game",
+        "rect": {
+          "x": 943.171875,
+          "y": 448,
+          "width": 45,
+          "height": 45,
+          "top": 448,
+          "right": 988.171875,
+          "bottom": 493,
+          "left": 943.171875
+        }
+      },
+      {
+        "text": "Select Final Fantasy VII",
+        "rect": {
+          "x": 355,
+          "y": 525.5,
+          "width": 44,
+          "height": 62,
+          "top": 525.5,
+          "right": 399,
+          "bottom": 587.5,
+          "left": 355
+        }
+      },
+      {
+        "text": "Select Metal Gear Solid",
+        "rect": {
+          "x": 409,
+          "y": 525.5,
+          "width": 44,
+          "height": 62,
+          "top": 525.5,
+          "right": 453,
+          "bottom": 587.5,
+          "left": 409
+        }
+      },
+      {
+        "text": "Select R4: Ridge Racer Type 4",
+        "rect": {
+          "x": 463,
+          "y": 525.5,
+          "width": 44,
+          "height": 62,
+          "top": 525.5,
+          "right": 507,
+          "bottom": 587.5,
+          "left": 463
+        }
+      },
+      {
+        "text": "Select Tekken 3",
+        "rect": {
+          "x": 517,
+          "y": 525.5,
+          "width": 44,
+          "height": 62,
+          "top": 525.5,
+          "right": 561,
+          "bottom": 587.5,
+          "left": 517
+        }
+      },
+      {
+        "text": "Select WipEout",
+        "rect": {
+          "x": 571,
+          "y": 525.5,
+          "width": 44,
+          "height": 62,
+          "top": 525.5,
+          "right": 615,
+          "bottom": 587.5,
+          "left": 571
+        }
+      },
+      {
+        "text": "Select Resident Evil 2",
+        "rect": {
+          "x": 625,
+          "y": 525.5,
+          "width": 44,
+          "height": 62,
+          "top": 525.5,
+          "right": 669,
+          "bottom": 587.5,
+          "left": 625
+        }
+      }
+    ]
+  },
+  "viewport-320": {
+    "scrollHeight": 750,
+    "viewHeight": 568,
+    "controls": [
+      {
+        "text": "Inspect the disc",
+        "rect": {
+          "x": 46.296875,
+          "y": 504,
+          "width": 98.625,
+          "height": 40,
+          "top": 504,
+          "right": 144.921875,
+          "bottom": 544,
+          "left": 46.296875
+        }
+      },
+      {
+        "text": "Enter its world",
+        "rect": {
+          "x": 166.921875,
+          "y": 504,
+          "width": 106.78125,
+          "height": 40,
+          "top": 504,
+          "right": 273.703125,
+          "bottom": 544,
+          "left": 166.921875
+        }
+      },
+      {
+        "text": "Previous game",
+        "rect": {
+          "x": 16,
+          "y": 408,
+          "width": 44,
+          "height": 44,
+          "top": 408,
+          "right": 60,
+          "bottom": 452,
+          "left": 16
+        }
+      },
+      {
+        "text": "Next game",
+        "rect": {
+          "x": 260,
+          "y": 408,
+          "width": 44,
+          "height": 44,
+          "top": 408,
+          "right": 304,
+          "bottom": 452,
+          "left": 260
+        }
+      },
+      {
+        "text": "Select Final Fantasy VII",
+        "rect": {
+          "x": 30,
+          "y": 567,
+          "width": 40,
+          "height": 62,
+          "top": 567,
+          "right": 70,
+          "bottom": 629,
+          "left": 30
+        }
+      },
+      {
+        "text": "Select Metal Gear Solid",
+        "rect": {
+          "x": 74,
+          "y": 567,
+          "width": 40,
+          "height": 62,
+          "top": 567,
+          "right": 114,
+          "bottom": 629,
+          "left": 74
+        }
+      },
+      {
+        "text": "Select R4: Ridge Racer Type 4",
+        "rect": {
+          "x": 118,
+          "y": 567,
+          "width": 40,
+          "height": 62,
+          "top": 567,
+          "right": 158,
+          "bottom": 629,
+          "left": 118
+        }
+      },
+      {
+        "text": "Select Tekken 3",
+        "rect": {
+          "x": 162,
+          "y": 567,
+          "width": 40,
+          "height": 62,
+          "top": 567,
+          "right": 202,
+          "bottom": 629,
+          "left": 162
+        }
+      },
+      {
+        "text": "Select WipEout",
+        "rect": {
+          "x": 206,
+          "y": 567,
+          "width": 40,
+          "height": 62,
+          "top": 567,
+          "right": 246,
+          "bottom": 629,
+          "left": 206
+        }
+      },
+      {
+        "text": "Select Resident Evil 2",
+        "rect": {
+          "x": 250,
+          "y": 567,
+          "width": 40,
+          "height": 62,
+          "top": 567,
+          "right": 290,
+          "bottom": 629,
+          "left": 250
+        }
+      }
+    ]
+  },
+  "touchSwipe": {
+    "scrollY": 285,
+    "scrollHeight": 1210,
+    "stage": {
+      "x": 0,
+      "y": -132,
+      "width": 390,
+      "height": 380,
+      "top": -132,
+      "right": 390,
+      "bottom": 248,
+      "left": 0
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,36 @@
+.spatial-app:not(.is-night){--muted:#4c5c59}
+.artifact-actions>button,.back-button,.flip-button{font-size:11px}
+.memory-auto>span{font-size:11px}
+.disc-dock>button{position:relative}
+.disc-dock>button>.dock-label{position:absolute;bottom:calc(100% + 14px);left:50%;transform:translate(-50%,5px);white-space:nowrap;background:var(--ink);color:var(--paper,#cdd3d1);padding:8px 11px;font-size:11px;line-height:1.3;border-radius:3px;opacity:0;pointer-events:none;transition:opacity .18s,transform .25s var(--ease);z-index:5}
+.disc-dock>button:hover>.dock-label,.disc-dock>button:focus-visible>.dock-label{opacity:1;transform:translate(-50%,0)}
+.light-switch>span{font-size:9px}.light-switch small{font-size:7px}
+@media(hover:none){.disc-dock>button.active>.dock-label{opacity:1;transform:translate(-50%,0);font-size:10px;bottom:calc(100% + 3px)}}
+@media(max-height:560px) and (min-width:541px){
+  .spatial-app:not(.is-detail){min-height:100svh;height:100svh}
+  .spatial-app:not(.is-detail) .site-header{height:55px;flex-shrink:0}
+  .spatial-app:not(.is-detail) .header-center{display:none}
+  .spatial-app:not(.is-detail) .gallery-stage{inset:13px 20% 13px}
+  .spatial-app:not(.is-detail) .exhibition{min-height:0;flex:1}
+  .spatial-app:not(.is-detail) .exhibit-note{top:12px;max-width:20%;font-size:6px}
+  .spatial-app:not(.is-detail) .exhibit-number{top:5px}
+  .spatial-app:not(.is-detail) .artifact-caption{left:3.5%;bottom:13px;max-width:24%;right:auto;text-align:left}
+  .spatial-app:not(.is-detail) .artifact-id{font-size:8px;justify-content:flex-start}
+  .spatial-app:not(.is-detail) .catalog-id{display:none}
+  .spatial-app:not(.is-detail) .artifact-caption h1{font-size:23px;margin:9px 0;line-height:1.1}
+  .spatial-app:not(.is-detail) .artifact-actions{flex-direction:column;align-items:flex-start;gap:0}
+  .spatial-app:not(.is-detail) .artifact-actions>button{min-height:44px;font-size:11px}
+  .spatial-app:not(.is-detail) .browse-controls{right:3.5%;bottom:15px;left:auto;gap:8px}
+  .spatial-app:not(.is-detail) .browse-controls>span{display:none}
+  .spatial-app:not(.is-detail) .browse-controls button{width:44px;height:44px}
+  .spatial-app:not(.is-detail) .light-switch{top:62px;right:3.5%;max-width:20%}
+  .spatial-app:not(.is-detail) .light-switch small{display:none}
+  .spatial-app:not(.is-detail) .light-switch>span{font-size:7px}
+  .spatial-app:not(.is-detail) .object-annotation{display:none}
+  .spatial-app:not(.is-detail) .collection-footer{height:66px;flex-shrink:0}
+  .spatial-app:not(.is-detail) .footer-note,.spatial-app:not(.is-detail) .footer-end{display:none}
+  .spatial-app:not(.is-detail) .disc-dock{gap:15px}
+  .spatial-app:not(.is-detail) .disc-dock img{width:27px;height:27px}
+  .spatial-app:not(.is-detail) .disc-dock button{min-width:40px;padding:5px}
+}
+@media(prefers-reduced-motion:reduce){.disc-dock>button>.dock-label{transition:none}}

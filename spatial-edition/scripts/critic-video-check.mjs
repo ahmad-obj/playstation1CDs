@@ -1,0 +1,3 @@
+import{chromium}from'@playwright/test';
+const b=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader']});
+const p=await b.newPage({viewport:{width:1440,height:900}});p.on('pageerror',e=>console.log('ERROR',e.message));await p.goto('http://localhost:5174');await p.waitForSelector('.is-ready');await p.getByRole('button',{name:'Enter its world'}).click();await p.waitForTimeout(4000);console.log(await p.locator('body').innerText());console.log('VIDEOS',await p.locator('video').count());await p.screenshot({path:'.impeccable/review/critic-a/post/video-debug.png'});await b.close();

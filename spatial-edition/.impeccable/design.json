@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-25T05:27:33Z",
+  "title": "Design System: PLAY / BACK — Spatial edition",
+  "extensions": {
+    "colorMeta": {
+      "studio": { "role": "neutral", "displayName": "Studio gray" },
+      "ink": { "role": "neutral", "displayName": "Graphite ink" },
+      "muted": { "role": "neutral", "displayName": "Muted green-gray" },
+      "after-hours": { "role": "neutral", "displayName": "After-hours blue-gray" },
+      "night-ink": { "role": "neutral", "displayName": "Pale night ink" },
+      "cursor": { "role": "primary", "displayName": "Pale interaction accent" },
+      "archive": { "role": "neutral", "displayName": "Mineral archive" },
+      "memory": { "role": "neutral", "displayName": "Memory-room dark" },
+      "memory-ink": { "role": "neutral", "displayName": "Memory-room warm white" }
+    },
+    "typographyMeta": {
+      "title": { "displayName": "Collection title", "purpose": "DM Sans game names beneath the physical object." },
+      "memory-display": { "displayName": "Memory phrase", "purpose": "Barlow Condensed cinematic phrases inside the memory room." }
+    },
+    "shadows": [
+      { "name": "memory-text", "value": "0 2px 25px #0002", "purpose": "Subtle separation of memory lettering from imagery." },
+      { "name": "fallback-disc", "value": "drop-shadow(2px 20px 20px #101a1818)", "purpose": "Depth beneath the local-image fallback; the WebGL scene uses textured elliptical shadows." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(.22,1,.36,1)", "purpose": "Shared arrival and interaction easing." },
+      { "name": "room-open", "value": "750ms", "purpose": "Expanding memory-room aperture." },
+      { "name": "aperture-open", "value": "1500ms", "purpose": "Image frame arrival." },
+      { "name": "frame-progress", "value": "5000ms linear", "purpose": "Optional memory autoplay interval." }
+    ],
+    "breakpoints": [
+      { "name": "small-phone", "value": "360px" },
+      { "name": "phone", "value": "540px" },
+      { "name": "compact", "value": "760px" },
+      { "name": "stacked-inspection", "value": "900px" },
+      { "name": "tablet", "value": "1100px" },
+      { "name": "wide", "value": "1700px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Browse arrow",
+      "kind": "button",
+      "refersTo": "browse-button",
+      "description": "Circular previous/next control with tonal inversion.",
+      "html": "<button class=\"ds-browse\" aria-label=\"Next game\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M5 12h14m-7-7 7 7-7 7\"/></svg></button>",
+      "css": ".ds-browse{width:45px;height:45px;border:1px solid var(--rule,#26313030);border-radius:50%;display:grid;place-items:center;background:transparent;color:var(--ink,#263130);cursor:pointer;transition:background .25s,color .25s}.ds-browse:hover{background:var(--ink,#263130);color:var(--paper,#cdd3d1)}.ds-browse:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-browse:active{transform:translateY(1px)}"
+    },
+    {
+      "name": "Flip control",
+      "kind": "button",
+      "refersTo": "flip-button",
+      "description": "Capsule action beneath the inspected physical disc.",
+      "html": "<button class=\"ds-flip\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M21 7v5h-5M20 12a8 8 0 1 0-2 6\"/></svg>Turn it over<kbd>F</kbd></button>",
+      "css": ".ds-flip{display:flex;align-items:center;gap:11px;padding:12px 17px;background:var(--ink,#263130);color:var(--paper,#cdd3d1);font:10px DM,Arial,sans-serif;border:0;border-radius:30px;cursor:pointer}.ds-flip svg{transition:transform .7s cubic-bezier(.22,1,.36,1)}.ds-flip:hover svg{transform:rotate(60deg)}.ds-flip kbd{font:8px DM,Arial,sans-serif;opacity:.6;border:1px solid currentColor;padding:1px 3px;margin-left:9px}.ds-flip:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-flip:active{transform:translateY(1px)}"
+    },
+    {
+      "name": "Inspect action",
+      "kind": "button",
+      "description": "Quiet underlined entry into object inspection.",
+      "html": "<button class=\"ds-inspect\">Inspect the disc<svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M7 17 17 7M7 7h10v10\"/></svg></button>",
+      "css": ".ds-inspect{display:flex;align-items:center;gap:9px;min-height:35px;border:0;border-bottom:1px solid var(--ink,#263130);background:transparent;color:var(--ink,#263130);font:10px DM,Arial,sans-serif;padding:0;cursor:pointer}.ds-inspect svg{transition:transform .3s cubic-bezier(.22,1,.36,1)}.ds-inspect:hover svg{transform:translate(3px,-3px)}.ds-inspect:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-inspect:active{transform:translateY(1px)}"
+    },
+    {
+      "name": "Header navigation",
+      "kind": "nav",
+      "description": "Unboxed collection and about navigation.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><button>Collection<sup>06</sup></button><button>About</button></nav>",
+      "css": ".ds-nav{display:flex;gap:31px;align-items:center}.ds-nav button{display:flex;align-items:center;gap:7px;min-height:40px;border:0;padding:0;background:transparent;color:var(--ink,#263130);font:11px DM,Arial,sans-serif;cursor:pointer}.ds-nav sup{font-size:7px;margin-top:-9px}.ds-nav button:hover{opacity:.65}.ds-nav button:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-nav button:active{transform:translateY(1px)}"
+    },
+    {
+      "name": "Memory navigation",
+      "kind": "button",
+      "description": "Pale outlined control on the dark memory-room background.",
+      "html": "<div class=\"ds-memory-sample\"><button class=\"ds-memory-arrow\" aria-label=\"Next frame\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M5 12h14m-7-7 7 7-7 7\"/></svg></button></div>",
+      "css": ".ds-memory-sample{background:#111a1d;padding:20px}.ds-memory-arrow{width:44px;height:44px;display:grid;place-items:center;border:1px solid #e0eada40;border-radius:50%;background:transparent;color:#f0f2e9;cursor:pointer;transition:background .3s}.ds-memory-arrow:hover{background:#e0eada20}.ds-memory-arrow:focus-visible{outline:2px solid currentColor;outline-offset:5px}.ds-memory-arrow:active{transform:translateY(1px)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A world you could hold.",
+    "overview": "The exhibition begins with physical discs in a cool, softly lit studio. Authentic printed surfaces, perspective, dark polycarbonate reverses and delicate contour graphics carry the identity. Text supports recognition and interaction; the memory room opens the object into original gameplay and cinematic imagery.",
+    "keyCharacteristics": ["Authentic disc artwork, original PlayStation captures and locally hosted archival films presented first.", "Cool studio atmosphere with an after-hours alternate.", "Spatial continuity, soft light and restrained exhibition labels.", "Fluid photographic apertures for captures; an unobstructed sculptural projection for video."],
+    "rules": [],
+    "dos": ["Do let authentic artwork, lighting and physical geometry lead the first viewport.", "Do keep supporting copy short and preserve explicit keyboard controls.", "Do carry the same selected object through collection, inspection and memory."],
+    "donts": ["Don't restore the superseded oversized collection wordmark composition.", "Don't replace original captures or scans with invented game artwork.", "Don't treat the memory-room display lettering as the default collection hierarchy."]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "checks": [
+    "Button and keyboard navigation",
+    "Drag selects a different artifact",
+    "Memory room navigation, playback toggle, Escape and focus restoration",
+    "Inspection and reverse by button and F key",
+    "Modal keys do not change underlying artifact or dismiss inspection",
+    "Index selects and opens artifact",
+    "320, 390, 600 and 768 px layouts have no horizontal overflow",
+    "Both lighting states",
+    "Reduced motion retains inspection controls",
+    "Deep link opens correct artifact",
+    "No-WebGL fallback preserves browsing and inspection"
+  ],
+  "errors": []
+}

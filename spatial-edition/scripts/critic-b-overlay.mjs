@@ -1,0 +1,16 @@
+import { chromium } from '@playwright/test';
+import fs from 'node:fs/promises';
+const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+const page=await browser.newPage({viewport:{width:1440,height:900}});const messages=[],scans=[];
+page.on('console',m=>{if(/impeccable/i.test(m.text()))messages.push(m.text());});
+await page.addInitScript(()=>{const original=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){if(type.startsWith('webgl'))return null;return original.call(this,type,...args);};});
+await page.goto('http://localhost:5174');
+const preflight=await page.evaluate(()=>{document.title='[Human] PLAY / BACK review';const script=document.createElement('script');script.textContent='window.__reviewMutation = true';document.head.append(script);return window.__reviewMutation===true;});
+await page.addScriptTag({url:'http://localhost:8400/detect.js'});await page.waitForTimeout(2500);
+const record=async surface=>scans.push({surface,findings:await page.evaluate(()=>window.impeccableScan().map(({el,findings})=>({element:el.tagName+'.'+el.className,text:el.textContent?.slice(0,100),findings})))});
+await record('collection');
+await page.getByRole('button',{name:'Inspect the disc',exact:true}).click();await page.waitForTimeout(2500);await record('inspection');
+await page.getByRole('button',{name:'Enter its world',exact:true}).click();await page.waitForTimeout(2500);await record('film');
+await page.getByRole('button',{name:'Captures',exact:true}).click();await page.waitForTimeout(2500);await record('captures');
+const result={preflight,scriptInjected:await page.locator('script[src="http://localhost:8400/detect.js"]').count(),messages,scans,note:'Headless Chromium overlay injection verified. No user-visible Human tab is provided by this environment. WebGL fallback used for overlay-only scan; actual WebGL layout inspected separately.'};
+await fs.writeFile('.impeccable/review/critic-b/overlay-evidence.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));await browser.close();
