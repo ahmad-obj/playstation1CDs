@@ -5,13 +5,13 @@ test('collection navigation wraps and inspection preserves its artifact', async 
   await page.getByRole('button', { name: 'Previous game', exact: true }).click();
   await expect(page.locator('.artifact-caption h1')).toHaveText('Final Fantasy VII');
   await page.getByRole('button', { name: 'Previous game', exact: true }).click();
-  await expect(page.locator('.artifact-caption h1')).toHaveText('Resident Evil 2');
+  await expect(page.locator('.artifact-caption h1')).toHaveText("Tony Hawk's Pro Skater 2");
   await page.getByRole('button', { name: 'Inspect the disc' }).click();
-  await expect(page).toHaveURL(/#game\/resident-evil-2$/);
+  await expect(page).toHaveURL(/#game\/tony-hawk-2$/);
   await page.keyboard.press('f');
   await expect(page.getByRole('button', { name: 'Show the artwork' })).toHaveAttribute('aria-pressed', 'true');
   await page.keyboard.press('Escape');
-  await expect(page.locator('.artifact-caption h1')).toHaveText('Resident Evil 2');
+  await expect(page.locator('.artifact-caption h1')).toHaveText("Tony Hawk's Pro Skater 2");
 });
 
 test('memory room traps navigation, restores focus, and returns to inspection', async ({ page }) => {
@@ -47,7 +47,7 @@ test('backward navigation during lazy loading cannot crash the scene', async ({ 
   await page.getByRole('button', { name: 'Previous game', exact: true }).click();
   release();
   await expect(page.locator('.is-ready')).toBeVisible({ timeout: 20000 });
-  await expect(page.locator('.artifact-caption h1')).toHaveText('Resident Evil 2');
+  await expect(page.locator('.artifact-caption h1')).toHaveText("Tony Hawk's Pro Skater 2");
   expect(errors).toEqual([]);
 });
 

@@ -13,6 +13,11 @@ const titles: Record<string, string[]> = {
   'tekken-3': ['ONE MORE', 'ROUND.'],
   'wipeout': ['FUTURE', 'FREQUENCY.'],
   'resident-evil-2': ['AFTER', 'DARK.'],
+  'castlevania-sotn': ['NOCTURNE IN', 'THE MOONLIGHT.'],
+  'silent-hill': ['FOG AND', 'ASHES.'],
+  'gran-turismo-2': ['THE REAL', 'SIMULATOR.'],
+  'crash-bandicoot': ['WARPED IN', 'TIME.'],
+  'tony-hawk-2': ['ONE LAST', 'COMBO.'],
 };
 
 export default function MemoryViewer({ game, nextGame, reduced, onClose, onNext }: { game: Game; nextGame: Game; reduced: boolean; onClose: () => void; onNext: () => void }) {
@@ -96,7 +101,7 @@ export default function MemoryViewer({ game, nextGame, reduced, onClose, onNext 
         <svg className="memory-frame-line" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path ref={outline} d="M .065 .19 C .12 .035 .33 .08 .51 .05 C .71 .015 .91 .015 .965 .19 C 1 .35 .965 .56 .952 .71 C .938 .95 .77 .947 .56 .95 C .33 .954 .135 .99 .052 .84 C .012 .71 .018 .4 .065 .19 Z"/></svg>
       </div>
       <div className="memory-side-note">A PLACE YOU CAN STILL REMEMBER.</div>
-      <div className="memory-headline"><h2 id="memory-title">{titles[game.id].map(line => <span key={line}>{line}</span>)}</h2><p>{game.memory}</p></div>
+      <div className="memory-headline"><h2 id="memory-title">{(titles[game.id] || [game.short.toUpperCase(), '']).map(line => <span key={line}>{line}</span>)}</h2><p>{game.memory}</p></div>
       <div className="memory-frame-count"><span>{String(frame+1).padStart(2,'0')}</span><span>/ {String(frames.length).padStart(2,'0')}</span><i>ORIGINAL<br/>PLAYSTATION CAPTURES</i></div>
     </div>}
     <div className="memory-bottom"><div className="memory-caption" aria-live="polite"><span>{mode === 'film' ? film.kind : `FRAME ${String(frame+1).padStart(2,'0')}`}</span><p>{mode === 'film' ? film.title : frames[frame].caption}</p></div>{mode === 'captures' && <div className="memory-controls"><button className="memory-auto" aria-label={playing ? 'Pause sequence' : 'Autoplay frames'} aria-pressed={playing} onClick={() => setPlaying(!playing)}>{playing ? <Pause size={14}/> : <Play size={14}/>}<span>{playing ? 'Pause sequence' : 'Autoplay frames'}</span></button><button aria-label="Previous frame" onClick={() => move(-1)}><ArrowLeft size={20}/></button><button aria-label="Next frame" onClick={() => move(1)}><ArrowRight size={20}/></button></div>}</div>

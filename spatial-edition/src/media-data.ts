@@ -29,4 +29,29 @@ export const media: Record<string, { src: string; caption: string }[]> = {
     { src: '/media/resident-evil-2-2.webp', caption: 'Entering the police station.' },
     { src: '/media/resident-evil-2-3.webp', caption: 'A silent corridor in the R.P.D.' },
   ],
-}
+  'castlevania-sotn': [
+    { src: '/media/castlevania-sotn-1.webp', caption: "In the entrance hall of Dracula's castle." },
+    { src: '/media/castlevania-sotn-2.webp', caption: 'Alucard facing the gothic horrors of the keep.' },
+    { src: '/media/castlevania-sotn-3.webp', caption: 'The inverted castle beneath the blood moon.' },
+  ],
+  'silent-hill': [
+    { src: '/media/silent-hill-1.webp', caption: 'Searching the fog-shrouded streets of Old Silent Hill.' },
+    { src: '/media/silent-hill-2.webp', caption: 'A flickering flashlight cutting through the rust.' },
+    { src: '/media/silent-hill-3.webp', caption: 'The sirens signal the Otherworld descent.' },
+  ],
+  'gran-turismo-2': [
+    { src: '/media/gran-turismo-2-1.webp', caption: 'The starting grid at Grand Valley Speedway.' },
+    { src: '/media/gran-turismo-2-2.webp', caption: 'Night trial endurance on the Seattle Circuit.' },
+    { src: '/media/gran-turismo-2-3.webp', caption: "Power-sliding through Laguna Seca's iconic corkscrew." },
+  ],
+  'crash-bandicoot': [
+    { src: '/media/crash-bandicoot-1.webp', caption: 'Galloping across the Great Wall of China on Pura.' },
+    { src: '/media/crash-bandicoot-2.webp', caption: 'High-altitude biplane dogfight over the desert.' },
+    { src: '/media/crash-bandicoot-3.webp', caption: 'Confronting Dr. Neo Cortex in the Time Twister.' },
+  ],
+  'tony-hawk-2': [
+    { src: '/media/tony-hawk-2-1.webp', caption: 'Dropping into the halfpipe inside The Hangar.' },
+    { src: '/media/tony-hawk-2-2.webp', caption: 'Grinding the rooftop rails across School II.' },
+    { src: '/media/tony-hawk-2-3.webp', caption: 'Carving lines through the empty pool at Venice Beach.' },
+  ],
+};

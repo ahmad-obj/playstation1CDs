@@ -207,9 +207,8 @@ export default function DiscScene({ state, onReady, onError }: Props) {
       fieldMaterial.uniforms.tint.value.lerp(new THREE.Color(games[activeIndex].color), easing * .3);
       fieldMaterial.uniforms.pointer.value.set(px, py);
       discs.forEach((disc, i) => {
-        let distance = ((i - renderedPosition + 15) % games.length + games.length) % games.length - 3;
-        // Every physical object keeps its cyclic position through the strip.
-        if (distance > 3) distance -= games.length;
+        let distance = ((i - renderedPosition) % games.length + games.length) % games.length;
+        if (distance > games.length / 2) distance -= games.length;
         const focus = Math.max(0, 1 - Math.abs(distance));
         const selected = Math.abs(distance) < .5;
         const extra = detail * (selected ? 0 : Math.sign(distance) * (halfWidth + 10));
