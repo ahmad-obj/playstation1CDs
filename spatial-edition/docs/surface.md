@@ -8,7 +8,7 @@ THESIS: Recognize a physical disc, handle it, then enter a remembered world. Aut
 
 WORLD: Cool studio gray, graphite labels, a dark after-hours alternate, perspective and soft reflections. Ground rings and partial hover contours frame real disc scans. A subtle image-derived atmosphere connects each object to its game.
 
-FIRST VIEWPORT: Small brand and navigation above an oversized central disc with neighboring discs partially visible. Quiet catalog notes, lighting switch, concise selected-game title and actions surround the scene. A six-disc image dock anchors the bottom. There is no oversized introductory headline.
+FIRST VIEWPORT: Small brand and navigation above an oversized central disc with neighboring discs partially visible. Quiet catalog notes, lighting switch, concise selected-game title and actions surround the scene. An eleven-disc image dock anchors the bottom. There is no oversized introductory headline.
 
 STORY: Drag, scroll, use arrow keys or select a thumbnail. Inspect the same object as it shifts into position; turn it over to see its dark reflective underside. Enter its world to play a locally hosted archival trailer, commercial or opening cinematic in a large framed projection. Switch to Captures for three original PlayStation images in a fluid photographic frame. At the end, choose the next disc. Close the memory room to return to the selected artifact.
 
@@ -18,7 +18,7 @@ RESPONSIVE: Desktop inspection places the object beside its description. Narrow 
 
 ## Implemented surfaces
 
-- Collection and six-disc dock; studio/after-hours lighting; optional sound.
+- Collection and eleven-disc dock; studio/after-hours lighting; optional sound.
 - Disc inspection, reversible physical object and hash-linked game selection.
 - Collection index and about/credits side panels.
 - Memory room with image captions, previous/next controls, frame selection and optional autoplay.

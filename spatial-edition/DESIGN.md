@@ -69,7 +69,7 @@ components:
 
 **Creative North Star: "A world you could hold."**
 
-The exhibition begins with physical discs in a cool, softly lit studio. Authentic printed surfaces, perspective, dark polycarbonate reverses and delicate contour graphics carry the identity. Text supports recognition and interaction; the memory room opens the object into original gameplay and cinematic imagery.
+The exhibition begins with physical discs in a cool, softly lit studio. Authentic printed surfaces, perspective, dark polycarbonate reverses and delicate contour graphics carry the identity. Text supports recognition and interaction; the memory room opens the object into original gameplay and cinematic imagery. After-hours is a full lighting state with camera parallax, cooler rim light, a deeper room field and selected-artwork color response.
 
 **Key Characteristics:**
 
@@ -92,7 +92,7 @@ The main collection is a viewport composition: narrow header, large central scen
 
 ## Elevation & Depth
 
-Depth belongs to the objects: perspective, annular geometry, a visible thin edge, metallic hub, printed front and reflective black reverse. Diffuse elliptical shadows and three ground rings establish a shared plane. Pointer motion shifts the disc and light; partial contours and radial ticks intensify on hover. Interface controls use fine borders and tonal inversion rather than card shadows. Memory depth combines image parallax, a moving aperture edge, a fine offset outline and atmospheric blur.
+Depth belongs to the objects: perspective, annular geometry, a visible thin edge, metallic hub, printed front and reflective black reverse. Diffuse elliptical shadows and three ground rings establish a shared plane. Pointer motion shifts the disc, camera and light with damped movement; a restrained pointer-following aperture now gives the ground plane a physical footprint, while partial contours and radial ticks intensify on hover. After-hours adds a low-energy colored room field, cooler rim light and deeper contact shadows. Interface controls use fine borders and tonal inversion rather than card shadows. Memory depth combines image parallax, a moving aperture edge, a fine offset outline and atmospheric blur.
 
 ## Shapes
 
@@ -107,7 +107,7 @@ Circles belong to discs, navigation and cursors; the flip control is a capsule. 
 - **Archive:** native dialog with image-led rows and fine separators; the collection remains mounted behind it.
 - **Memory viewer:** native dialog opens on a locally hosted archival trailer, commercial or opening cinematic before captures. The projection has a sculpted outer contour and a quiet custom transport outside the picture; playback starts muted, supports seeking, sound and fullscreen, and has a local poster and retry state. A Film / Captures switch reveals three locally hosted original-resolution captures per game in a fluid frame, with caption, manual navigation and optional five-second autoplay. At a film ending or the final capture, an image-led next-memory prompt returns the visitor to the next physical disc. Switching to captures or closing the room removes the video element.
 
-Motion follows `--ease`; the scene settles when idle and suspends behind modal surfaces. Reduced-motion preferences remove decorative animation and pointer parallax. Sound is optional and initially off.
+Motion follows `--ease`; the scene settles when idle and suspends behind modal surfaces. Reduced-motion preferences remove decorative animation and pointer parallax. Short landscape film viewports widen the projection stage and reduce chrome so the archival image retains presence without clipping. Sound is optional and initially off.
 
 ## Do's and Don'ts
 

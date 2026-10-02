@@ -1,5 +1,18 @@
 import { expect, test } from '@playwright/test';
 
+test('announces a loading screen while the spatial scene is still loading', async ({ page }) => {
+  let release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  await page.route(/\/discs\/[^/]+\.webp$/, async route => { await gate; await route.continue(); });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  const loadingScreen = page.locator('.startup-loading');
+  await expect(loadingScreen).toBeVisible();
+  await expect(loadingScreen).toHaveAttribute('role', 'status');
+  release();
+  await expect(page.locator('.is-ready')).toBeVisible({ timeout: 20000 });
+  await expect(loadingScreen).toHaveCount(0);
+});
+
 test('collection navigation wraps and inspection preserves its artifact', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Previous game', exact: true }).click();
@@ -37,17 +50,20 @@ test('index opens the selected artifact', async ({ page }) => {
   await expect(page.locator('.archive-panel')).toHaveCount(0);
 });
 
-test('backward navigation during lazy loading cannot crash the scene', async ({ page }) => {
+test('keyboard navigation during delayed scene loading cannot crash the scene', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
   let release!: () => void;
   const gate = new Promise<void>(resolve => { release = resolve; });
   await page.route(/\/src\/DiscScene\.tsx/, async route => { await gate; await route.continue(); });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await page.getByRole('button', { name: 'Previous game', exact: true }).click();
-  await page.getByRole('button', { name: 'Previous game', exact: true }).click();
+  await page.locator('.spatial-app').waitFor();
+  await expect(page.locator('#boot-screen')).toHaveCount(0);
+  await page.waitForTimeout(100);
+  await page.keyboard.press('ArrowLeft');
+  await page.keyboard.press('ArrowLeft');
+  await expect(page.locator('.artifact-caption h1')).toHaveText("Tony Hawk's Pro Skater 2");
   release();
   await expect(page.locator('.is-ready')).toBeVisible({ timeout: 20000 });
-  await expect(page.locator('.artifact-caption h1')).toHaveText("Tony Hawk's Pro Skater 2");
   expect(errors).toEqual([]);
 });
 

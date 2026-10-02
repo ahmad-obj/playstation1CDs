@@ -4,12 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#cdd3d1" />
-    <meta name="description" content="A love letter to the original PlayStation. Six iconic games, six physical artifacts. Pick one up. Play it back." />
+    <meta name="description" content="A love letter to the original PlayStation. Eleven iconic games, eleven physical artifacts. Pick one up. Play it back." />
     <meta property="og:title" content="PLAY / BACK — Spatial Edition" />
-    <meta property="og:description" content="Small discs. Entire worlds. An interactive exhibition of the games that stayed with us." />
+    <meta property="og:description" content="Eleven small discs. Entire worlds. An interactive exhibition of the games that stayed with us." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href="/fonts/barlow-condensed-latin.woff2" as="font" type="font/woff2" crossorigin />
     <title>PLAY / BACK — Spatial Edition</title>
+    <style>
+      .startup-loading{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;background:#d9ddd5;color:#263130;font-family:Arial,sans-serif}
+      .startup-loading__content{display:grid;justify-items:center;gap:16px}
+      .startup-loading__disc{position:relative;width:clamp(88px,15vw,132px);aspect-ratio:1;border:1px solid #53615a;border-radius:50%;display:grid;place-items:center;animation:startup-turn 4s linear infinite}
+      .startup-loading__disc::before{content:"";position:absolute;inset:9%;border:1px solid #53615a80;border-radius:50%;border-left-color:transparent}
+      .startup-loading__disc::after{content:"";width:12%;aspect-ratio:1;border:1px solid #53615a;border-radius:50%;background:#d9ddd5}
+      .startup-loading__name{font-size:13px;font-weight:650;letter-spacing:.08em}
+      .startup-loading__label{font-size:8px;letter-spacing:.16em;color:#53615a}
+      @keyframes startup-turn{to{transform:rotate(360deg)}}
+      @media(prefers-reduced-motion:reduce){.startup-loading__disc{animation:none}}
+    </style>
   </head>
-  <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
+  <body>
+    <div id="boot-screen" class="startup-loading" role="status" aria-live="polite" aria-label="Loading the PLAY / BACK spatial exhibition">
+      <div class="startup-loading__content" aria-hidden="true"><span class="startup-loading__disc"></span><span class="startup-loading__name">PLAY / BACK</span><span class="startup-loading__label">LOADING THE SPATIAL EXHIBITION</span></div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

@@ -6,6 +6,8 @@ The site reuses screenshot sets across regional game pages. Metal Gear Solid, R4
 
 Images were converted mechanically with ImageMagick to quality-90 WebP at their original source dimensions. Original letterboxing, pixels, and in-game overlays are preserved; no artificial detail, cropping, or retouching was introduced. Artwork and trademarks remain with their respective owners. These citations provide provenance, not commercial redistribution rights.
 
+The table below records the original eighteen captures. Fifteen captures added with the expanded collection do not yet have their exact source-image URLs recorded; their local filenames and captions are in `src/media-data.ts`. Record those source URLs and confirm distribution permission before public release.
+
 | Local asset | Caption | Exact original URL |
 | --- | --- | --- |
 | `public/media/metal-gear-solid-1.webp` | Infiltrating Shadow Moses. | [ss1.jpg](https://psxdatacenter.com/images/screens/P/M/SLES-01734/ss1.jpg) |

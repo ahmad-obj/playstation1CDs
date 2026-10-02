@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Plus, RotateCw, Volume2, VolumeX, X, MoveHorizontal, Sun, Moon, Aperture, Play, Grid2X2 } from 'lucide-react';
 import { discPath, games, number, wrap } from './data';
 import { media } from './media-data';
@@ -34,6 +34,7 @@ export default function App() {
   const memoryDestination = useRef<number | null>(null);
   const drag = useRef({ down: false, moved: false, x: 0, y: 0, previousX: 0, time: 0, velocity: 0, position: 0 });
   const game = games[active];
+  useLayoutEffect(() => { document.getElementById('boot-screen')?.remove(); }, []);
   const onReady = useCallback(() => setReady(true), []);
   const onError = useCallback(() => { setFallback(true); setReady(true); }, []);
   const setPosition = useCallback((position: number) => { scene.current.position = position; setActive(wrap(Math.round(position))); wake(); }, []);
@@ -123,6 +124,8 @@ export default function App() {
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const rect=event.currentTarget.getBoundingClientRect(); const x=event.clientX-rect.left, y=event.clientY-rect.top;
     scene.current.pointerX=(x/rect.width-.5)*2; scene.current.pointerY=(y/rect.height-.5)*2;
+    event.currentTarget.style.setProperty('--pointer-x', `${(x/rect.width-.5)*18}%`);
+    event.currentTarget.style.setProperty('--pointer-y', `${(y/rect.height-.5)*18}%`);
     scene.current.hovering = true; event.currentTarget.dataset.pointer='true';
     if(cursor.current) cursor.current.style.transform=`translate3d(${x}px,${y}px,0)`;
     if(drag.current.down) {
@@ -143,10 +146,15 @@ export default function App() {
     if(drag.current.moved) { if(!detail) { const velocity=performance.now()-drag.current.time<100?drag.current.velocity:0; setPosition(Math.round(scene.current.position-Math.max(-.65,Math.min(.65,velocity*.3)))); playTone('move',sound); } }
     else if(detail) flip();
     else { const r=event.currentTarget.getBoundingClientRect(); const distance=event.clientX-r.left-r.width/2; const spacing=pixelsPerDisc(r); if(Math.abs(distance)<spacing*.4) openGame(); else step(Math.sign(distance)); }
+    if (!drag.current.down) {
+      event.currentTarget.style.setProperty('--pointer-x', '0%');
+      event.currentTarget.style.setProperty('--pointer-y', '0%');
+    }
     wake();
   };
 
-  return <div className={`spatial-app ${detail?'is-detail':''} ${night?'is-night':''} ${ready?'is-ready':''}`}>
+  return <div className={`spatial-app ${detail?'is-detail':''} ${night?'is-night':''} ${ready?'is-ready':''}`} style={{ '--game-color': game.color } as CSSProperties} aria-busy={!ready}>
+    {!ready && <div className="startup-loading" role="status" aria-live="polite" aria-label="Loading the PLAY / BACK spatial exhibition"><div className="startup-loading__content" aria-hidden="true"><span className="startup-loading__disc"/><span className="startup-loading__name">PLAY / BACK</span><span className="startup-loading__label">LOADING THE SPATIAL EXHIBITION</span></div></div>}
     <a className="skip-link" href="#artifact-controls">Skip to artifact controls</a>
     <div className="atmosphere" aria-hidden="true"><img key={game.id} src={media[game.id][0].src} alt=""/><div/></div>
     <header className="site-header">
@@ -158,7 +166,7 @@ export default function App() {
       <div className="exhibit-note"><span className="live-dot"/>{detail?'THE ARTIFACT, UP CLOSE':'SMALL DISCS. ENTIRE WORLDS.'}</div>
       <div className="exhibit-number" aria-hidden="true"><span>{number(active)}</span><i>/ {String(games.length).padStart(2, '0')}</i></div>
       {detail && <button ref={closeButton} className="back-button" onClick={closeDetail}><ArrowLeft size={15}/> Back to the collection</button>}
-      <div className="gallery-stage" ref={stage} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={e=>release(e)} onPointerCancel={e=>release(e,true)} onPointerLeave={e=>{e.currentTarget.dataset.pointer='false';scene.current.hovering=false;if(!drag.current.down){scene.current.pointerX=0;scene.current.pointerY=0;}wake();}}>
+      <div className="gallery-stage" ref={stage} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={e=>release(e)} onPointerCancel={e=>release(e,true)} onPointerLeave={e=>{e.currentTarget.dataset.pointer='false';scene.current.hovering=false;if(!drag.current.down){scene.current.pointerX=0;scene.current.pointerY=0;e.currentTarget.style.setProperty('--pointer-x','0%');e.currentTarget.style.setProperty('--pointer-y','0%');}wake();}}>
         {!fallback && <Suspense fallback={null}><DiscScene state={scene} onReady={onReady} onError={onError}/></Suspense>}
         {(!ready||fallback) && <div className={`fallback-scene ${detail?'fallback-detail':''}`}>{[-1,0,1].map(offset=><div className={`fallback-disc offset-${offset}`} key={`${active}-${offset}`}>{flipped&&offset===0?<div className="fallback-reverse"/>:<img src={discPath(games[wrap(active+offset)])} alt=""/>}</div>)}</div>}
         <div className="disc-cursor" ref={cursor}><span>{detail?'TURN':'INSPECT'}<Plus size={12}/></span><i><MoveHorizontal size={20}/></i></div>

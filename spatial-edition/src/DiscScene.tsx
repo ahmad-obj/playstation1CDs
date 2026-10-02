@@ -59,6 +59,8 @@ export default function DiscScene({ state, onReady, onError }: Props) {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(29, 1, .1, 80);
     camera.position.set(0, 0, 14);
+    const cameraTarget = new THREE.Vector3(0, 0, 14);
+    const cameraLook = new THREE.Vector3(0, 0, 0);
     const room = new RoomEnvironment();
     const pmrem = new THREE.PMREMGenerator(renderer);
     const environment = pmrem.fromScene(room, .04);
@@ -70,6 +72,14 @@ export default function DiscScene({ state, onReady, onError }: Props) {
     key.position.set(-3, 6, 10); scene.add(key);
     const fill = new THREE.DirectionalLight(0xdce4ff, .65);
     fill.position.set(6, -2, 5); scene.add(fill);
+    const nightRim = new THREE.PointLight(0x90a9c5, 0, 18, 2);
+    nightRim.position.set(0, 2.5, 5.5); scene.add(nightRim);
+    const studioKey = new THREE.Color(0xfff8e9);
+    const nightKey = new THREE.Color(0xb8c8e6);
+    const studioFill = new THREE.Color(0xdce4ff);
+    const nightFill = new THREE.Color(0x7590b2);
+    const shadowStudio = new THREE.Color(0xffffff);
+    const shadowNight = new THREE.Color(0x6e8297);
 
     const faceGeometry = ring(.43, radius - .015);
     const backGeometry = ring(.43, radius - .008);
@@ -159,12 +169,13 @@ export default function DiscScene({ state, onReady, onError }: Props) {
     const fieldGeometry = new THREE.PlaneGeometry(45, 15);
     const fieldMaterial = new THREE.ShaderMaterial({
       transparent: true, depthWrite: false,
-      uniforms: { tint: { value: new THREE.Color(games[wrap(Math.round(state.current.position))].color) }, pointer: { value: new THREE.Vector2() } },
+      uniforms: { tint: { value: new THREE.Color(games[wrap(Math.round(state.current.position))].color) }, pointer: { value: new THREE.Vector2() }, night: { value: 0 } },
       vertexShader: 'varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-      fragmentShader: `varying vec2 vUv; uniform vec3 tint; uniform vec2 pointer;
+      fragmentShader: `varying vec2 vUv; uniform vec3 tint; uniform vec2 pointer; uniform float night;
         void main(){vec2 p=(vUv-.5)*vec2(3.,2.);p-=pointer*.035;
         float radius=length(p*vec2(.7,2.3));float falloff=exp(-radius*radius*3.);
-        gl_FragColor=vec4(tint,falloff*.17);
+        float nightStrength=mix(.12,.24,night);
+        gl_FragColor=vec4(tint,falloff*nightStrength);
         #include <colorspace_fragment>
         }`,
     });
@@ -199,13 +210,32 @@ export default function DiscScene({ state, onReady, onError }: Props) {
       px += (s.pointerX - px) * easing; py += (s.pointerY - py) * easing;
       hover += ((s.hovering ? 1 : 0) - hover) * easing;
       night += ((s.night ? 1 : 0) - night) * easing;
+      const mobile = width <= 540 || (s.detail && width <= 900);
+      const cameraMotion = s.reduced ? 0 : (mobile ? .62 : 1);
+      cameraTarget.set(px * (s.detail ? .18 : .1) * cameraMotion, -py * (s.detail ? .11 : .065) * cameraMotion, 14 - detail * .28 - hover * .035);
+      camera.position.x += (cameraTarget.x - camera.position.x) * easing;
+      camera.position.y += (cameraTarget.y - camera.position.y) * easing;
+      camera.position.z += (cameraTarget.z - camera.position.z) * easing;
+      cameraLook.set(s.detail ? -.16 : 0, detail * -.04, 0);
+      camera.lookAt(cameraLook);
       contourMaterial.color.setRGB(.29 + night * .35, .34 + night * .34, .28 + night * .35);
       haloMaterial.color.setRGB(.32 + night * .4, .38 + night * .4, .3 + night * .36);
-      key.intensity = 2.2 + night * .6; fill.intensity = .65 + night * .4;
-      const mobile = width <= 540 || (s.detail && width <= 900);
+      ambient.intensity = .85 - night * .25;
+      key.intensity = 2.2 - night * .45; fill.intensity = .65 - night * .2;
+      key.color.copy(studioKey).lerp(nightKey, night);
+      fill.color.copy(studioFill).lerp(nightFill, night);
+      nightRim.intensity = night * 1.4;
+      nightRim.position.x = px * 2.6;
+      nightRim.position.y = 2.5 - py * 1.8;
+      shadowMaterial.color.copy(shadowStudio).lerp(shadowNight, night);
+      shadowMaterial.opacity = .72 - night * .14;
+      edgeMaterial.envMapIntensity = .72 + night * .34;
+      hubMaterial.envMapIntensity = 1.25 + night * .35;
+      sheenMaterial.opacity = .045 + night * .025;
       const activeIndex = ((Math.round(renderedPosition) % games.length) + games.length) % games.length;
       fieldMaterial.uniforms.tint.value.lerp(new THREE.Color(games[activeIndex].color), easing * .3);
       fieldMaterial.uniforms.pointer.value.set(px, py);
+      fieldMaterial.uniforms.night.value = night;
       discs.forEach((disc, i) => {
         let distance = ((i - renderedPosition) % games.length + games.length) % games.length;
         if (distance > games.length / 2) distance -= games.length;
@@ -224,6 +254,7 @@ export default function DiscScene({ state, onReady, onError }: Props) {
         disc.visible = Math.abs(disc.position.x) < halfWidth + 4 && (detail < .98 || selected);
         shadows[i].position.x = disc.position.x;
         shadows[i].scale.x = scale;
+        shadows[i].scale.y = 1 + hover * focus * .1;
         shadows[i].visible = disc.visible;
         groundContours[i].position.x = disc.position.x;
         groundContours[i].visible = disc.visible;

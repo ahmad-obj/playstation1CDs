@@ -1,4 +1,14 @@
 .spatial-app:not(.is-night){--muted:#4c5c59}
+.spatial-app{--game-color:#a8c0ae}
+.atmosphere::before{content:'';position:absolute;inset:-18%;background:radial-gradient(ellipse at 50% 42%,color-mix(in srgb,var(--game-color),transparent 88%),transparent 58%);opacity:.38;transform:scale(1.04);transition:opacity 1.2s var(--ease)}
+.atmosphere::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,transparent 22%,#111a1d0b 75%,#10171925 100%);opacity:.32;pointer-events:none}
+.gallery-stage::before{content:'';position:absolute;inset:4% 8%;pointer-events:none;z-index:1;opacity:0;mix-blend-mode:soft-light;background:radial-gradient(ellipse at calc(50% + var(--pointer-x,0%)) calc(50% + var(--pointer-y,0%)),color-mix(in srgb,var(--game-color),white 42%) 0%,transparent 34%);transition:opacity .55s var(--ease),background-position .6s var(--ease)}
+.gallery-stage[data-pointer=true]::before{opacity:.34}
+.is-night .atmosphere>div{opacity:.72;background:radial-gradient(ellipse at 50% 8%,#8da0c025,transparent 53%),linear-gradient(130deg,#162126aa,#202c30 45%,#10181dcc)}
+.is-night .atmosphere::before{opacity:.9;animation:night-drift 18s ease-in-out infinite alternate}
+.is-night .atmosphere::after{opacity:.75;background:radial-gradient(ellipse at 50% 42%,transparent 18%,#07101444 72%,#050a0d9c 100%)}
+.is-night .gallery-stage::after{content:'';position:absolute;inset:12% 18% 6%;pointer-events:none;border:1px solid color-mix(in srgb,var(--game-color),transparent 88%);border-radius:50%;transform:rotate(-9deg) scaleX(1.35);opacity:.26;mix-blend-mode:screen}
+@keyframes night-drift{from{transform:translate3d(-1.5%,0,0) scale(1.04)}to{transform:translate3d(1.5%,1%,0) scale(1.08)}}
 .artifact-actions>button,.back-button,.flip-button{font-size:11px}
 .memory-auto>span{font-size:11px}
 .disc-dock>button{position:relative}
@@ -34,3 +44,7 @@
   .spatial-app:not(.is-detail) .disc-dock button{min-width:40px;padding:5px}
 }
 @media(prefers-reduced-motion:reduce){.disc-dock>button>.dock-label{transition:none}}
+@media(prefers-reduced-motion:reduce){.is-night .atmosphere::before{animation:none}.gallery-stage::after,.gallery-stage::before{display:none}}
+.gallery-stage::before{will-change:opacity,background-position}
+@media(hover:none){.gallery-stage::before{display:none}}
+.archive-panel{animation-fill-mode:both}
