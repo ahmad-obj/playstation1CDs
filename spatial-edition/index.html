@@ -11,7 +11,8 @@
     <link rel="preload" href="/fonts/barlow-condensed-latin.woff2" as="font" type="font/woff2" crossorigin />
     <title>PLAY / BACK — Spatial Edition</title>
     <style>
-      .startup-loading{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;background:#d9ddd5;color:#263130;font-family:Arial,sans-serif}
+      @font-face{font-family:DM;src:url('/fonts/dm-sans-latin.woff2') format('woff2');font-weight:100 900;font-display:swap}
+      .startup-loading{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;background:#d9ddd5;color:#263130;font-family:DM,sans-serif}
       .startup-loading__content{display:grid;justify-items:center;gap:16px}
       .startup-loading__disc{position:relative;width:clamp(88px,15vw,132px);aspect-ratio:1;border:1px solid #53615a;border-radius:50%;display:grid;place-items:center;animation:startup-turn 4s linear infinite}
       .startup-loading__disc::before{content:"";position:absolute;inset:9%;border:1px solid #53615a80;border-radius:50%;border-left-color:transparent}

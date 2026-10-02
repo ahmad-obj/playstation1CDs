@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-10-02T12:19:01.033Z",
+        "reason": "Codex triage: the only wide tracking in this file is on the short uppercase startup status label; the hook reserves wide tracking for short uppercase labels, and body copy is unaffected."
+      }
+    ]
+  }
+}
