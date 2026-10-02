@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { discPath, games } from './data';
+import { discPath, games, wrap } from './data';
 
-export interface SceneState { position: number; detail: boolean; flipped: boolean; pointerX: number; pointerY: number; dragging: boolean; reduced: boolean; }
+export interface SceneState { position: number; detail: boolean; flipped: boolean; pointerX: number; pointerY: number; dragging: boolean; reduced: boolean; hovering: boolean; suspended: boolean; night: boolean; }
 interface Props { state: React.RefObject<SceneState>; onReady: () => void; onError: () => void; }
 
 const radius = 2.8;
@@ -30,10 +30,10 @@ function reverseMaterial() {
         float facing = abs(dot(n, v));
         float sweep = pow(abs(cos(angle - light.x * .5 + .7)), 22.);
         vec3 spectrum = .5 + .5 * cos(6.28318 * (vec3(0., .33, .67) + r * .85 + angle * .14 + light.y * .15));
-        float rings = sin(r * 2800.) * .008;
+        float rings = sin(r * 1600.) * .001 * (1. - smoothstep(.3, 1.5, fwidth(r * 1600.)));
         float sheen = pow(abs(sin(angle + light.x * .3)), 14.);
-        vec3 color = vec3(.022, .019, .035) + spectrum * sweep * (.19 + (1. - facing) * .3);
-        color += vec3(.19, .17, .24) * sheen * .32 + rings;
+        vec3 color = vec3(.006, .005, .012) + spectrum * sweep * (.075 + (1. - facing) * .2);
+        color += vec3(.19, .17, .24) * sheen * .18 + rings;
         color += pow(1. - facing, 3.) * .12;
         gl_FragColor = vec4(color, 1.);
         #include <tonemapping_fragment>
@@ -54,35 +54,46 @@ export default function DiscScene({ state, onReady, onError }: Props) {
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = .95;
     element.appendChild(renderer.domElement);
     const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-10, 10, 3.8, -3.8, .1, 80);
-    camera.position.set(0, 0, 15);
+    const camera = new THREE.PerspectiveCamera(29, 1, .1, 80);
+    camera.position.set(0, 0, 14);
+    const cameraTarget = new THREE.Vector3(0, 0, 14);
+    const cameraLook = new THREE.Vector3(0, 0, 0);
     const room = new RoomEnvironment();
     const pmrem = new THREE.PMREMGenerator(renderer);
     const environment = pmrem.fromScene(room, .04);
     scene.environment = environment.texture;
     room.dispose(); pmrem.dispose();
-    const ambient = new THREE.AmbientLight(0xffffff, 1.5);
+    const ambient = new THREE.AmbientLight(0xffffff, .85);
     scene.add(ambient);
-    const key = new THREE.DirectionalLight(0xffffff, 3.5);
+    const key = new THREE.DirectionalLight(0xfff8e9, 2.2);
     key.position.set(-3, 6, 10); scene.add(key);
-    const fill = new THREE.DirectionalLight(0xdce4ff, 1.3);
+    const fill = new THREE.DirectionalLight(0xdce4ff, .65);
     fill.position.set(6, -2, 5); scene.add(fill);
+    const nightRim = new THREE.PointLight(0x90a9c5, 0, 18, 2);
+    nightRim.position.set(0, 2.5, 5.5); scene.add(nightRim);
+    const studioKey = new THREE.Color(0xfff8e9);
+    const nightKey = new THREE.Color(0xb8c8e6);
+    const studioFill = new THREE.Color(0xdce4ff);
+    const nightFill = new THREE.Color(0x7590b2);
+    const shadowStudio = new THREE.Color(0xffffff);
+    const shadowNight = new THREE.Color(0x6e8297);
 
     const faceGeometry = ring(.43, radius - .015);
     const backGeometry = ring(.43, radius - .008);
     const hubGeometry = ring(.355, .46);
+    const rimFaceGeometry = ring(radius - .023, radius);
     const edgeGeometry = new THREE.CylinderGeometry(radius, radius, .037, 192, 1, true);
     edgeGeometry.rotateX(Math.PI / 2);
     const hubEdgeGeometry = new THREE.CylinderGeometry(.355, .355, .045, 96, 1, true);
     hubEdgeGeometry.rotateX(Math.PI / 2);
     const edgeMaterial = new THREE.MeshPhysicalMaterial({ color: '#39333d', roughness: .19, metalness: .75, clearcoat: 1, iridescence: .6, iridescenceIOR: 1.3 });
-    const hubMaterial = new THREE.MeshPhysicalMaterial({ color: '#bdbbbb', metalness: .78, roughness: .15, clearcoat: 1, side: THREE.DoubleSide });
+    const hubMaterial = new THREE.MeshPhysicalMaterial({ color: '#d1d3cf', metalness: .9, roughness: .12, clearcoat: 1, envMapIntensity: 1.25, side: THREE.DoubleSide });
     const backMaterial = reverseMaterial();
     const sheenGeometry = ring(.47, radius - .035);
-    const sheenMaterial = new THREE.MeshPhysicalMaterial({ color: '#ffffff', metalness: .55, roughness: .26, transparent: true, opacity: .055, depthWrite: false, iridescence: .8 });
+    const sheenMaterial = new THREE.MeshPhysicalMaterial({ color: '#ffffff', metalness: .45, roughness: .3, transparent: true, opacity: .045, depthWrite: false, clearcoat: 1, iridescence: .12 });
     const loader = new THREE.TextureLoader();
     const textures: THREE.Texture[] = [];
     const materials: THREE.Material[] = [];
@@ -90,7 +101,7 @@ export default function DiscScene({ state, onReady, onError }: Props) {
     let loaded = 0;
     const discs = games.map((game, i) => {
       const group = new THREE.Group();
-      const material = new THREE.MeshStandardMaterial({ color: '#e2e0d7', roughness: .57, metalness: .07, envMapIntensity: .45 });
+      const material = new THREE.MeshStandardMaterial({ color: '#e2e0d7', roughness: .62, metalness: .02, envMapIntensity: .17 });
       materials.push(material);
       loader.load(discPath(game), texture => {
         if (disposed) { texture.dispose(); return; }
@@ -108,7 +119,8 @@ export default function DiscScene({ state, onReady, onError }: Props) {
       const rearHub = new THREE.Mesh(hubGeometry, hubMaterial); rearHub.position.z = -.025;
       const rim = new THREE.Mesh(edgeGeometry, edgeMaterial);
       const hole = new THREE.Mesh(hubEdgeGeometry, hubMaterial);
-      group.add(front, back, sheen, hub, rearHub, rim, hole);
+      const rimFace = new THREE.Mesh(rimFaceGeometry, hubMaterial); rimFace.position.z = .024;
+      group.add(front, back, sheen, hub, rearHub, rim, hole, rimFace);
       group.position.x = (i - state.current.position) * spacing;
       scene.add(group);
       return group;
@@ -116,33 +128,78 @@ export default function DiscScene({ state, onReady, onError }: Props) {
 
     const shadowCanvas = document.createElement('canvas'); shadowCanvas.width = 256; shadowCanvas.height = 128;
     const context = shadowCanvas.getContext('2d')!;
-    const gradient = context.createRadialGradient(128, 64, 0, 128, 64, 64);
-    gradient.addColorStop(0, 'rgba(35,33,25,.26)'); gradient.addColorStop(.4, 'rgba(35,33,25,.15)'); gradient.addColorStop(1, 'rgba(35,33,25,0)');
-    context.scale(2, 1); context.fillStyle = gradient; context.fillRect(0, 0, 256, 128);
+    context.translate(128, 64); context.scale(2, 1);
+    const gradient = context.createRadialGradient(0, 0, 0, 0, 0, 64);
+    gradient.addColorStop(0, 'rgba(35,33,25,.42)'); gradient.addColorStop(.35, 'rgba(35,33,25,.18)'); gradient.addColorStop(1, 'rgba(35,33,25,0)');
+    context.fillStyle = gradient; context.fillRect(-64, -64, 128, 128);
     // Elliptical soft shadows live behind the objects, in the same scene.
     const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
     const shadowGeometry = new THREE.PlaneGeometry(6.8, 1.1);
-    const shadowMaterial = new THREE.MeshBasicMaterial({ map: shadowTexture, transparent: true, depthWrite: false, opacity: .55 });
+    const shadowMaterial = new THREE.MeshBasicMaterial({ map: shadowTexture, transparent: true, depthWrite: false, opacity: .8 });
     const shadows = discs.map(() => { const mesh = new THREE.Mesh(shadowGeometry, shadowMaterial); mesh.position.set(0, -2.94, -1); scene.add(mesh); return mesh; });
+
+    // Ground contours establish a shared plane; the floating label stays above it.
+    const contourGeometry = new THREE.RingGeometry(3.1, 3.108, 192);
+    const contourMaterial = new THREE.MeshBasicMaterial({ color: '#697255', transparent: true, opacity: .19, side: THREE.DoubleSide, depthWrite: false });
+    const groundContours = discs.map(() => {
+      const group = new THREE.Group();
+      for (let j = 0; j < 3; j++) {
+        const contour = new THREE.Mesh(contourGeometry, contourMaterial);
+        contour.scale.setScalar(1 + j * .13); contour.position.z = -.02 * j;
+        group.add(contour);
+      }
+      group.rotation.x = -1.29; group.position.set(0, -2.6, -.8); scene.add(group); return group;
+    });
+    const haloGroup = new THREE.Group(); scene.add(haloGroup);
+    const haloMaterial = new THREE.MeshBasicMaterial({ color: '#7a845f', transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false });
+    const haloGeometries: THREE.BufferGeometry[] = [];
+    for (let j = 0; j < 3; j++) {
+      const geometry = new THREE.RingGeometry(3.08 + j * .13, 3.086 + j * .13, 120, 1, j * .8, Math.PI * (j === 1 ? .9 : 1.35));
+      haloGeometries.push(geometry); haloGroup.add(new THREE.Mesh(geometry, haloMaterial));
+    }
+    const tickGeometry = new THREE.PlaneGeometry(.065, .006); haloGeometries.push(tickGeometry);
+    for (let j = 0; j < 48; j++) {
+      const angle = j / 48 * Math.PI * 2;
+      const tick = new THREE.Mesh(tickGeometry, haloMaterial);
+      tick.position.set(Math.cos(angle) * 3.48, Math.sin(angle) * 3.48, 0); tick.rotation.z = angle;
+      if (j % 4 === 0) tick.scale.x = 2;
+      haloGroup.add(tick);
+    }
+
+    const fieldGeometry = new THREE.PlaneGeometry(45, 15);
+    const fieldMaterial = new THREE.ShaderMaterial({
+      transparent: true, depthWrite: false,
+      uniforms: { tint: { value: new THREE.Color(games[wrap(Math.round(state.current.position))].color) }, pointer: { value: new THREE.Vector2() }, night: { value: 0 } },
+      vertexShader: 'varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+      fragmentShader: `varying vec2 vUv; uniform vec3 tint; uniform vec2 pointer; uniform float night;
+        void main(){vec2 p=(vUv-.5)*vec2(3.,2.);p-=pointer*.035;
+        float radius=length(p*vec2(.7,2.3));float falloff=exp(-radius*radius*3.);
+        float nightStrength=mix(.12,.24,night);
+        gl_FragColor=vec4(tint,falloff*nightStrength);
+        #include <colorspace_fragment>
+        }`,
+    });
+    const field = new THREE.Mesh(fieldGeometry, fieldMaterial); field.position.set(0, -2, -5); scene.add(field);
 
     let width = 1, height = 1, halfWidth = 8;
     const resize = () => {
       width = element.clientWidth; height = element.clientHeight;
       if (!width || !height) return;
-      const halfHeight = width < 700 ? 3.85 : 3.6;
+      const compact = width <= 540 || (state.current.detail && width <= 900);
+      const halfHeight = compact ? Math.max(3.85, 2.96 * height / (width * .85)) : 3.6;
       halfWidth = halfHeight * width / height;
-      camera.left = -halfWidth; camera.right = halfWidth; camera.top = halfHeight; camera.bottom = -halfHeight;
+      camera.aspect = width / height; camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(halfHeight / 14));
       camera.updateProjectionMatrix(); renderer.setSize(width, height); invalidate();
     };
     let frame = 0;
     let renderedPosition = state.current.position;
-    let detail = 0, flip = 0, px = 0, py = 0;
+    let detail = 0, flip = 0, px = 0, py = 0, hover = 0, night = 0;
     let last = 0;
     let settleFrames = 0;
     let previousState = '';
     const render = (time: number) => {
       frame = 0;
-      if (disposed || document.hidden) return;
+      if (disposed || document.hidden || state.current.suspended) return;
       const s = state.current;
       const dt = Math.min((time - last) / 1000 || .016, .05); last = time;
       const easing = s.reduced ? 1 : 1 - Math.exp(-dt * (s.dragging ? 22 : 9));
@@ -151,32 +208,69 @@ export default function DiscScene({ state, onReady, onError }: Props) {
       detail += ((s.detail ? 1 : 0) - detail) * easing;
       flip += ((s.flipped ? Math.PI : 0) - flip) * (s.reduced ? 1 : 1 - Math.exp(-dt * 6.5));
       px += (s.pointerX - px) * easing; py += (s.pointerY - py) * easing;
-      const mobile = width < 700;
+      hover += ((s.hovering ? 1 : 0) - hover) * easing;
+      night += ((s.night ? 1 : 0) - night) * easing;
+      const mobile = width <= 540 || (s.detail && width <= 900);
+      const cameraMotion = s.reduced ? 0 : (mobile ? .62 : 1);
+      cameraTarget.set(px * (s.detail ? .18 : .1) * cameraMotion, -py * (s.detail ? .11 : .065) * cameraMotion, 14 - detail * .28 - hover * .035);
+      camera.position.x += (cameraTarget.x - camera.position.x) * easing;
+      camera.position.y += (cameraTarget.y - camera.position.y) * easing;
+      camera.position.z += (cameraTarget.z - camera.position.z) * easing;
+      cameraLook.set(s.detail ? -.16 : 0, detail * -.04, 0);
+      camera.lookAt(cameraLook);
+      contourMaterial.color.setRGB(.29 + night * .35, .34 + night * .34, .28 + night * .35);
+      haloMaterial.color.setRGB(.32 + night * .4, .38 + night * .4, .3 + night * .36);
+      ambient.intensity = .85 - night * .25;
+      key.intensity = 2.2 - night * .45; fill.intensity = .65 - night * .2;
+      key.color.copy(studioKey).lerp(nightKey, night);
+      fill.color.copy(studioFill).lerp(nightFill, night);
+      nightRim.intensity = night * 1.4;
+      nightRim.position.x = px * 2.6;
+      nightRim.position.y = 2.5 - py * 1.8;
+      shadowMaterial.color.copy(shadowStudio).lerp(shadowNight, night);
+      shadowMaterial.opacity = .72 - night * .14;
+      edgeMaterial.envMapIntensity = .72 + night * .34;
+      hubMaterial.envMapIntensity = 1.25 + night * .35;
+      sheenMaterial.opacity = .045 + night * .025;
+      const activeIndex = ((Math.round(renderedPosition) % games.length) + games.length) % games.length;
+      fieldMaterial.uniforms.tint.value.lerp(new THREE.Color(games[activeIndex].color), easing * .3);
+      fieldMaterial.uniforms.pointer.value.set(px, py);
+      fieldMaterial.uniforms.night.value = night;
       discs.forEach((disc, i) => {
-        let distance = ((i - renderedPosition + 15) % games.length + games.length) % games.length - 3;
-        // Every physical object keeps its cyclic position through the strip.
-        if (distance > 3) distance -= games.length;
+        let distance = ((i - renderedPosition) % games.length + games.length) % games.length;
+        if (distance > games.length / 2) distance -= games.length;
         const focus = Math.max(0, 1 - Math.abs(distance));
         const selected = Math.abs(distance) < .5;
-        const extra = detail * (selected ? 0 : Math.sign(distance) * 9);
-        disc.position.x = distance * spacing + extra - detail * (mobile ? 0 : halfWidth * .40);
-        disc.position.y = .14 + focus * .06 + detail * (mobile ? .15 : .05);
-        disc.position.z = focus * .5;
-        const scale = 1 + focus * .025 + detail * (mobile ? -.05 : .12);
+        const extra = detail * (selected ? 0 : Math.sign(distance) * (halfWidth + 10));
+        const breathe = s.reduced ? 0 : Math.sin(time * .00065 + i) * .025 * hover;
+        disc.position.x = distance * spacing + extra - detail * (mobile ? 0 : halfWidth * .40) + px * focus * .12 * (s.reduced ? 0 : 1);
+        disc.position.y = .12 + focus * .14 + detail * (mobile ? .05 : -.06) + breathe + hover * focus * .09;
+        disc.position.z = -.7 + focus * 1.35;
+        const scale = .98 + focus * .02 + detail * (mobile ? -.08 : .02);
         disc.scale.setScalar(scale);
-        disc.rotation.x = .12 + (s.reduced ? 0 : py * .09 * focus);
-        disc.rotation.y = distance * -.19 + (s.reduced ? 0 : px * .12 * focus) + (selected ? flip : 0);
-        disc.rotation.z = -.07 + distance * -.055 + (s.reduced ? 0 : velocity * -.065) + detail * .07;
-        disc.visible = Math.abs(disc.position.x) < halfWidth + 4;
+        disc.rotation.x = .18 + Math.min(Math.abs(distance), 1) * .16 + (s.reduced ? 0 : py * .18 * focus);
+        disc.rotation.y = distance * -.38 + (s.reduced ? 0 : px * .24 * focus) + (selected ? flip : 0);
+        disc.rotation.z = -.09 + distance * -.085 + (s.reduced ? 0 : velocity * -.13) + detail * .09;
+        disc.visible = Math.abs(disc.position.x) < halfWidth + 4 && (detail < .98 || selected);
         shadows[i].position.x = disc.position.x;
         shadows[i].scale.x = scale;
+        shadows[i].scale.y = 1 + hover * focus * .1;
         shadows[i].visible = disc.visible;
+        groundContours[i].position.x = disc.position.x;
+        groundContours[i].visible = disc.visible;
+        groundContours[i].scale.setScalar(1 + focus * hover * .045);
+        if (selected) {
+          haloGroup.position.copy(disc.position); haloGroup.position.z -= .08;
+          haloGroup.rotation.set(disc.rotation.x, disc.rotation.y - flip, disc.rotation.z + (s.reduced ? 0 : time * .000025));
+          haloGroup.scale.setScalar(scale * (1 + hover * .018));
+        }
       });
+      haloMaterial.opacity = (.085 + hover * .31) * (1 - detail * .5);
       backMaterial.uniforms.light.value.set(px, py);
       key.position.x = -3 + px * 3; key.position.y = 6 - py * 3;
       renderer.render(scene, camera);
-      const signature = [s.position,s.detail,s.flipped,s.pointerX,s.pointerY,s.dragging,s.reduced].join(',');
-      if (signature !== previousState || Math.abs(velocity) > .0001 || Math.abs((s.detail ? 1 : 0) - detail) > .0001 || Math.abs((s.flipped ? Math.PI : 0) - flip) > .0001 || Math.abs(s.pointerX-px) > .0001 || Math.abs(s.pointerY-py) > .0001) settleFrames = 0;
+      const signature = [s.position,s.detail,s.flipped,s.pointerX,s.pointerY,s.dragging,s.reduced,s.hovering,s.night].join(',');
+      if ((!s.reduced && s.hovering) || signature !== previousState || Math.abs(velocity) > .0001 || Math.abs((s.detail ? 1 : 0) - detail) > .0001 || Math.abs((s.flipped ? Math.PI : 0) - flip) > .0001 || Math.abs(s.pointerX-px) > .0001 || Math.abs(s.pointerY-py) > .0001 || Math.abs((s.hovering ? 1 : 0)-hover) > .0001 || Math.abs((s.night ? 1 : 0)-night) > .0001) settleFrames = 0;
       else settleFrames++;
       previousState = signature;
       if (settleFrames < 5) frame = requestAnimationFrame(render);
@@ -192,8 +286,8 @@ export default function DiscScene({ state, onReady, onError }: Props) {
       disposed = true; cancelAnimationFrame(frame); observer.disconnect();
       window.removeEventListener('playback:render', wake); document.removeEventListener('visibilitychange', wake);
       renderer.domElement.removeEventListener('webglcontextlost', lost);
-      [faceGeometry, backGeometry, hubGeometry, edgeGeometry, hubEdgeGeometry, sheenGeometry, shadowGeometry].forEach(g => g.dispose());
-      [...materials, edgeMaterial, hubMaterial, backMaterial, sheenMaterial, shadowMaterial].forEach(m => m.dispose());
+      [faceGeometry, backGeometry, hubGeometry, rimFaceGeometry, edgeGeometry, hubEdgeGeometry, sheenGeometry, shadowGeometry, contourGeometry, fieldGeometry, ...haloGeometries].forEach(g => g.dispose());
+      [...materials, edgeMaterial, hubMaterial, backMaterial, sheenMaterial, shadowMaterial, contourMaterial, haloMaterial, fieldMaterial].forEach(m => m.dispose());
       textures.forEach(t => t.dispose()); shadowTexture.dispose(); environment.dispose();
       renderer.dispose(); renderer.domElement.remove();
     };

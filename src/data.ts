@@ -44,7 +44,7 @@ export const games: Game[] = [
   },
   {
     id: 'wipeout', title: 'WipEout', short: 'WipEout', year: '1995',
-    developer: 'Psygnosis', genre: 'Anti-gravity racing', serial: 'SCES-00010', region: 'PAL', color: '#b2bad0',
+    developer: 'Psygnosis', genre: 'Anti-gravity racing', serial: 'SCUS-94301', region: 'NTSC-U/C', color: '#b2bad0',
     quote: 'The future\nhad a sound.',
     description: 'Anti-gravity racing at the intersection of club culture and graphic design. WipEout’s electronic pulse and razor-sharp identity made the PlayStation feel like a glimpse of tomorrow.',
     memory: 'A generation found its frequency at 300 kilometres an hour.',
@@ -55,6 +55,41 @@ export const games: Game[] = [
     quote: 'Leave the\nlights on.',
     description: 'Two strangers. One city at the end of the world. Resident Evil 2 made every locked door a question, every last bullet a decision, and every typewriter a small moment of relief.',
     memory: 'You can still hear the sound of that opening door.',
+  },
+  {
+    id: 'castlevania-sotn', title: 'Castlevania: Symphony of the Night', short: 'Symphony of the Night', year: '1997',
+    developer: 'Konami', genre: 'Action-adventure', serial: 'SLUS-00067', region: 'NTSC-U/C', color: '#c4a882',
+    quote: 'What is a man?\nA miserable little pile of secrets.',
+    description: 'An inverted castle suspended between nightmare and grace. Michiru Yamane’s baroque score and Ayami Kojima’s sumptuous gothic art redefined exploration for a generation.',
+    memory: 'The moment the castle turned upside down.',
+  },
+  {
+    id: 'silent-hill', title: 'Silent Hill', short: 'Silent Hill', year: '1999',
+    developer: 'Konami', genre: 'Psychological horror', serial: 'SLUS-00707', region: 'NTSC-U/C', color: '#9a8c82',
+    quote: 'The fear of blood\ntends to create fear for the flesh.',
+    description: 'A dense fog of falling ash, a broken radio crackling in the darkness, and an industrial nightmare where sirens tear through the silence. Team Silent turned hardware limits into pure psychological dread.',
+    memory: 'Running down that darkening alley until the siren begins.',
+  },
+  {
+    id: 'gran-turismo-2', title: 'Gran Turismo 2', short: 'Gran Turismo 2', year: '1999',
+    developer: 'Polyphony Digital', genre: 'Simulation racing', serial: 'SCUS-94455', region: 'NTSC-U/C', color: '#7d91a8',
+    quote: 'The real driving\nsimulator.',
+    description: 'Over six hundred cars, authentic physics simulation, and late nights tuning gear ratios on test tracks. Gran Turismo 2 turned a love for automobiles into an obsession with precision.',
+    memory: 'Saving every credit for that first used Skyline GT-R.',
+  },
+  {
+    id: 'crash-bandicoot', title: 'Crash Bandicoot: Warped', short: 'Crash Bandicoot: Warped', year: '1998',
+    developer: 'Naughty Dog', genre: 'Platformer', serial: 'SCUS-94244', region: 'NTSC-U/C', color: '#d49258',
+    quote: 'Hold onto\nyour pants.',
+    description: 'Time-twisting portals, tiger rides along the Great Wall, and precision platforming pushed to the brink of cartoon perfection. Naughty Dog squeezed every ounce of power out of the grey box.',
+    memory: 'The frantic dash toward the camera from a giant rolling boulder.',
+  },
+  {
+    id: 'tony-hawk-2', title: "Tony Hawk's Pro Skater 2", short: 'Pro Skater 2', year: '2000',
+    developer: 'Neversoft', genre: 'Extreme sports', serial: 'SLUS-01066', region: 'NTSC-U/C', color: '#879199',
+    quote: 'One more manual\nto connect the combo.',
+    description: 'The manual changed everything. Linking vert airs, street grinds, and impossible gaps across the Hangar and School II to a blistering skate-punk soundtrack that defined an era.',
+    memory: 'Landing that million-point combo as the timer ran down to zero.',
   },
 ];
 

@@ -1,255 +1,188 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, ArrowLeft, ArrowRight, Plus, RotateCw, Volume2, VolumeX, X, MoveHorizontal, Disc3, Grid2X2 } from 'lucide-react';
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Plus, RotateCw, Volume2, VolumeX, X, MoveHorizontal, Sun, Moon, Aperture, Play, Grid2X2 } from 'lucide-react';
 import { discPath, games, number, wrap } from './data';
+import { media } from './media-data';
 import { playTone } from './audio';
 import type { SceneState } from './DiscScene';
 
 const DiscScene = lazy(() => import('./DiscScene'));
-type View = 'collection' | 'index' | 'about';
+const MemoryViewer = lazy(() => import('./MemoryViewer'));
 const wake = () => window.dispatchEvent(new Event('playback:render'));
-const initialGame = () => Math.max(0, games.findIndex(g => location.hash === `#game/${g.id}`));
-
-function Symbols() {
-  return <svg className="symbols" width="87" height="16" viewBox="0 0 87 16" fill="none" aria-label="Triangle, circle, cross, square">
-    <path d="M8 2 15 14H1L8 2Z" stroke="currentColor" strokeWidth="1.3" />
-    <circle cx="31" cy="8" r="6" stroke="currentColor" strokeWidth="1.3" />
-    <path d="m49 2 12 12m0-12L49 14" stroke="currentColor" strokeWidth="1.3" />
-    <path d="M74 2h12v12H74z" stroke="currentColor" strokeWidth="1.3" />
-  </svg>;
-}
+const initial = Math.max(0, games.findIndex(g => location.hash === `#game/${g.id}`));
+const hasGame = games.some(g => location.hash === `#game/${g.id}`);
+const pixelsPerDisc = (rect: DOMRect) => rect.height * 6.8 / (rect.width <= 540 ? 2 * Math.max(3.85, 2.96 * rect.height / (rect.width * .85)) : 7.2);
 
 export default function App() {
-  const [view, setView] = useState<View>(location.hash === '#index' ? 'index' : location.hash === '#about' ? 'about' : 'collection');
-  const [detail, setDetail] = useState(location.hash.startsWith('#game/'));
-  const [active, setActive] = useState(location.hash.startsWith('#game/') ? initialGame() : 1);
+  const [active, setActive] = useState(hasGame ? initial : 1);
+  const [detail, setDetail] = useState(hasGame);
+  const [panel, setPanel] = useState<'index' | 'about' | null>(null);
   const [flipped, setFlipped] = useState(false);
   const [ready, setReady] = useState(false);
   const [fallback, setFallback] = useState(false);
-  const [sound, setSound] = useState(() => { try { return localStorage.getItem('playback-sound') === 'true'; } catch { return false; } });
+  const [sound, setSound] = useState(false);
+  const [night, setNight] = useState(false);
+  const [world, setWorld] = useState(false);
   const [reduced, setReduced] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const scene = useRef<SceneState>({ position: active, detail, flipped: false, pointerX: 0, pointerY: 0, dragging: false, reduced });
+  const scene = useRef<SceneState>({ position: active, detail, flipped: false, pointerX: 0, pointerY: 0, dragging: false, reduced, hovering: false, suspended: false, night: false });
   const stage = useRef<HTMLDivElement>(null);
   const cursor = useRef<HTMLDivElement>(null);
-  const closeButton = useRef<HTMLButtonElement>(null);
+  const worldButton = useRef<HTMLButtonElement>(null);
   const inspectButton = useRef<HTMLButtonElement>(null);
-  const pageHeading = useRef<HTMLHeadingElement>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
+  const panelDialog = useRef<HTMLDialogElement>(null);
+  const panelTrigger = useRef<HTMLButtonElement | null>(null);
+  const memoryDestination = useRef<number | null>(null);
   const drag = useRef({ down: false, moved: false, x: 0, y: 0, previousX: 0, time: 0, velocity: 0, position: 0 });
   const game = games[active];
+  useLayoutEffect(() => { document.getElementById('boot-screen')?.remove(); }, []);
   const onReady = useCallback(() => setReady(true), []);
   const onError = useCallback(() => { setFallback(true); setReady(true); }, []);
-
-  const setPosition = useCallback((position: number) => {
-    scene.current.position = position;
-    setActive(wrap(Math.round(position)));
-    wake();
-  }, []);
+  const setPosition = useCallback((position: number) => { scene.current.position = position; setActive(wrap(Math.round(position))); wake(); }, []);
+  const resetFlip = () => { setFlipped(false); scene.current.flipped = false; };
   const navigate = useCallback((index: number) => {
     const current = Math.round(scene.current.position);
-    let delta = wrap(index - wrap(current));
-    if (delta > games.length / 2) delta -= games.length;
-    setPosition(current + delta); setFlipped(false); scene.current.flipped = false;
-    playTone('move', sound); wake();
+    let delta = wrap(index - wrap(current)); if (delta > 3) delta -= games.length;
+    setPosition(current + delta); resetFlip(); playTone('move', sound);
+    if (scene.current.detail) history.replaceState(null, '', `#game/${games[index].id}`);
   }, [setPosition, sound]);
   const step = useCallback((direction: number) => {
-    setPosition(Math.round(scene.current.position) + direction);
-    setFlipped(false); scene.current.flipped = false; playTone('move', sound);
-    if (scene.current.detail) history.replaceState(null, '', `#game/${games[wrap(Math.round(scene.current.position))].id}`);
-    wake();
+    const next = Math.round(scene.current.position) + direction;
+    setPosition(next); resetFlip(); playTone('move', sound);
+    if (scene.current.detail) history.replaceState(null, '', `#game/${games[wrap(next)].id}`);
   }, [setPosition, sound]);
   const openGame = useCallback((index = active) => {
-    navigate(index); setView('collection'); setDetail(true); scene.current.detail = true;
-    history.pushState(null, '', `#game/${games[index].id}`);
-    playTone('select', sound); wake();
-    setTimeout(() => closeButton.current?.focus({ preventScroll: true }), 80);
+    navigate(index); setDetail(true); scene.current.detail = true; scene.current.hovering = false;
+    history.pushState(null, '', `#game/${games[index].id}`); playTone('select', sound); wake();
+    setTimeout(() => closeButton.current?.focus({ preventScroll: true }), 60);
   }, [active, navigate, sound]);
   const closeDetail = useCallback(() => {
-    setDetail(false); setFlipped(false); scene.current.detail = false; scene.current.flipped = false;
+    setDetail(false); resetFlip(); scene.current.detail = false; scene.current.hovering = false;
     history.pushState(null, '', '#collection'); wake();
-    setTimeout(() => inspectButton.current?.focus({ preventScroll: true }), 80);
+    setTimeout(() => inspectButton.current?.focus({ preventScroll: true }), 60);
   }, []);
-  const changeView = useCallback((next: View) => {
-    setView(next); setDetail(false); setFlipped(false); scene.current.detail = false; scene.current.flipped = false;
-    history.pushState(null, '', `#${next}`); playTone('select', sound); wake();
-    setTimeout(() => pageHeading.current?.focus({ preventScroll: true }), 80);
-  }, [sound]);
-  const flip = useCallback(() => {
-    setFlipped(value => { scene.current.flipped = !value; return !value; });
-    playTone('flip', sound); wake();
-  }, [sound]);
-
+  const flip = useCallback(() => { setFlipped(value => { scene.current.flipped = !value; return !value; }); playTone('flip', sound); wake(); }, [sound]);
+  const enterWorld = () => { history.pushState({ playbackRoom: true }, '', location.href); scene.current.suspended = true; scene.current.hovering = false; setWorld(true); playTone('select', sound); };
+  const leaveWorld = (destination: number | null = null) => {
+    memoryDestination.current = destination;
+    if (history.state?.playbackRoom) history.back();
+    else { setWorld(false); scene.current.suspended = false; wake(); setTimeout(() => worldButton.current?.focus({ preventScroll: true }), 60); }
+  };
+  const openPanel = (next: 'index' | 'about', trigger: HTMLButtonElement) => { panelTrigger.current = trigger; setPanel(next); scene.current.suspended = true; };
+  const closePanel = () => { panelDialog.current?.close(); setPanel(null); scene.current.suspended = false; wake(); panelTrigger.current?.focus(); };
   useEffect(() => {
-    const media = matchMedia('(prefers-reduced-motion: reduce)');
-    const listener = () => { setReduced(media.matches); scene.current.reduced = media.matches; wake(); };
-    media.addEventListener('change', listener);
-    return () => media.removeEventListener('change', listener);
+    if (!panel) return;
+    panelDialog.current?.showModal();
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previous; };
+  }, [panel]);
+  useEffect(() => {
+    const query = matchMedia('(prefers-reduced-motion: reduce)');
+    const listener = () => { setReduced(query.matches); scene.current.reduced = query.matches; wake(); };
+    query.addEventListener('change', listener); return () => query.removeEventListener('change', listener);
   }, []);
   useEffect(() => {
     const onPop = () => {
-      const hash = location.hash;
-      const id = games.findIndex(g => hash === `#game/${g.id}`);
-      const isDetail = id !== -1;
-      setView(hash === '#index' ? 'index' : hash === '#about' ? 'about' : 'collection');
-      setDetail(isDetail); scene.current.detail = isDetail;
-      if (isDetail) setPosition(id);
-      setFlipped(false); scene.current.flipped = false; wake();
+      const room = history.state?.playbackRoom === true;
+      let index = games.findIndex(g => location.hash === `#game/${g.id}`);
+      if (!room && memoryDestination.current !== null) { index = memoryDestination.current; memoryDestination.current = null; history.replaceState(null, '', `#game/${games[index].id}`); }
+      setWorld(room); scene.current.suspended = room;
+      setDetail(index !== -1); scene.current.detail = index !== -1;
+      if (index !== -1) setPosition(index);
+      resetFlip(); wake();
+      if (!room) setTimeout(() => worldButton.current?.focus({ preventScroll: true }), 60);
     };
-    window.addEventListener('popstate', onPop);
-    return () => window.removeEventListener('popstate', onPop);
+    window.addEventListener('popstate', onPop); return () => window.removeEventListener('popstate', onPop);
   }, [setPosition]);
-  useEffect(() => {
-    document.title = detail ? `${game.title} — PLAY / BACK` : view === 'about' ? 'The story — PLAY / BACK' : view === 'index' ? 'Collection index — PLAY / BACK' : 'PLAY / BACK — A PlayStation Disc Archive';
-  }, [detail, game.title, view]);
+  useEffect(() => { document.title = `${game.title} — PLAY / BACK · Spatial edition`; }, [game.title]);
   useEffect(() => {
     const key = (event: KeyboardEvent) => {
-      if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement).tagName)) return;
-      if (event.key === 'Escape') { if (detail) closeDetail(); else if (view !== 'collection') changeView('collection'); }
-      if (view !== 'collection') return;
+      if (world || panel || event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement).tagName)) return;
+      if (event.key === 'Escape' && detail) closeDetail();
       if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
       if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
       if (event.key.toLowerCase() === 'f' && detail) { event.preventDefault(); flip(); }
     };
-    window.addEventListener('keydown', key);
-    return () => window.removeEventListener('keydown', key);
-  }, [step, view, detail, flip, closeDetail, changeView]);
+    window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
+  }, [step, detail, flip, closeDetail, world, panel]);
   useEffect(() => {
-    const element = stage.current;
-    if (!element || view !== 'collection' || detail) return;
-    let lastWheel = 0, sum = 0;
-    const wheel = (event: WheelEvent) => {
-      if (event.ctrlKey) return;
-      event.preventDefault();
-      if (Date.now() - lastWheel < 460) return;
+    const element = stage.current; if (!element || detail) return;
+    let last = 0, sum = 0;
+    const wheel = (event: WheelEvent) => { if (event.ctrlKey) return; event.preventDefault(); if (Date.now()-last < 500) return;
       sum += Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-      if (Math.abs(sum) > 35) { step(Math.sign(sum)); sum = 0; lastWheel = Date.now(); }
+      if (Math.abs(sum) > 35) { step(Math.sign(sum)); sum=0; last=Date.now(); }
     };
-    element.addEventListener('wheel', wheel, { passive: false });
-    return () => element.removeEventListener('wheel', wheel);
-  }, [step, view, detail]);
-  useEffect(() => { try { localStorage.setItem('playback-sound', String(sound)); } catch { /* Preference storage is optional. */ } }, [sound]);
+    element.addEventListener('wheel', wheel, { passive:false }); return () => element.removeEventListener('wheel', wheel);
+  }, [step, detail]);
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) return;
-    const element = event.currentTarget;
-    element.setPointerCapture(event.pointerId);
-    drag.current = { down: true, moved: false, x: event.clientX, y: event.clientY, previousX: event.clientX, time: performance.now(), velocity: 0, position: scene.current.position };
-    scene.current.dragging = true; element.dataset.dragging = 'true';
+    event.currentTarget.setPointerCapture(event.pointerId);
+    drag.current = { down:true, moved:false, x:event.clientX, y:event.clientY, previousX:event.clientX, time:performance.now(), velocity:0, position:scene.current.position };
+    scene.current.dragging=true; event.currentTarget.dataset.dragging='true';
   };
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left, y = event.clientY - rect.top;
-    scene.current.pointerX = (x / rect.width - .5) * 2;
-    scene.current.pointerY = (y / rect.height - .5) * 2;
-    if (cursor.current) cursor.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    if (drag.current.down) {
-      const delta = event.clientX - drag.current.x;
-      const now = performance.now();
-      drag.current.velocity = (event.clientX - drag.current.previousX) / Math.max(8, now - drag.current.time);
-      drag.current.previousX = event.clientX; drag.current.time = now;
-      if (Math.abs(delta) > 7 || Math.abs(event.clientY - drag.current.y) > 7) drag.current.moved = true;
-      if (!detail) {
-        const pixelsPerDisc = rect.height * 6.8 / (rect.width < 700 ? 7.7 : 7.2);
-        scene.current.position = drag.current.position - delta / pixelsPerDisc;
-      } else {
-        scene.current.pointerX = Math.max(-2, Math.min(2, delta / 100));
-      }
+    const rect=event.currentTarget.getBoundingClientRect(); const x=event.clientX-rect.left, y=event.clientY-rect.top;
+    scene.current.pointerX=(x/rect.width-.5)*2; scene.current.pointerY=(y/rect.height-.5)*2;
+    event.currentTarget.style.setProperty('--pointer-x', `${(x/rect.width-.5)*18}%`);
+    event.currentTarget.style.setProperty('--pointer-y', `${(y/rect.height-.5)*18}%`);
+    scene.current.hovering = true; event.currentTarget.dataset.pointer='true';
+    if(cursor.current) cursor.current.style.transform=`translate3d(${x}px,${y}px,0)`;
+    if(drag.current.down) {
+      const delta=event.clientX-drag.current.x, now=performance.now();
+      drag.current.velocity=(event.clientX-drag.current.previousX)/Math.max(8,now-drag.current.time);
+      drag.current.previousX=event.clientX; drag.current.time=now;
+      if(Math.abs(delta)>7 || Math.abs(event.clientY-drag.current.y)>7) drag.current.moved=true;
+      if(!detail) scene.current.position=drag.current.position-delta/pixelsPerDisc(rect);
+      else scene.current.pointerX=Math.max(-2,Math.min(2,delta/100));
     }
     wake();
   };
-  const release = (event: React.PointerEvent<HTMLDivElement>, cancelled = false) => {
-    if (!drag.current.down) return;
-    drag.current.down = false; scene.current.dragging = false; event.currentTarget.dataset.dragging = 'false';
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    if (cancelled) { setPosition(Math.round(scene.current.position)); return; }
-    if (drag.current.moved) {
-      if (!detail) {
-        const recentVelocity = performance.now() - drag.current.time < 100 ? drag.current.velocity : 0;
-        setPosition(Math.round(scene.current.position - Math.max(-.65, Math.min(.65, recentVelocity * .3))));
-        playTone('move', sound);
-      }
-    } else if (detail) flip();
-    else {
-      const rect = event.currentTarget.getBoundingClientRect();
-      const fromCenter = event.clientX - rect.left - rect.width / 2;
-      const pixelsPerDisc = rect.height * 6.8 / (rect.width < 700 ? 7.7 : 7.2);
-      if (Math.abs(fromCenter) < pixelsPerDisc * .47) openGame();
-      else step(Math.sign(fromCenter));
+  const release = (event: React.PointerEvent<HTMLDivElement>, cancelled=false) => {
+    if(!drag.current.down) return;
+    drag.current.down=false; scene.current.dragging=false; event.currentTarget.dataset.dragging='false';
+    if(event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    if(cancelled) { setPosition(Math.round(scene.current.position)); return; }
+    if(drag.current.moved) { if(!detail) { const velocity=performance.now()-drag.current.time<100?drag.current.velocity:0; setPosition(Math.round(scene.current.position-Math.max(-.65,Math.min(.65,velocity*.3)))); playTone('move',sound); } }
+    else if(detail) flip();
+    else { const r=event.currentTarget.getBoundingClientRect(); const distance=event.clientX-r.left-r.width/2; const spacing=pixelsPerDisc(r); if(Math.abs(distance)<spacing*.4) openGame(); else step(Math.sign(distance)); }
+    if (!drag.current.down) {
+      event.currentTarget.style.setProperty('--pointer-x', '0%');
+      event.currentTarget.style.setProperty('--pointer-y', '0%');
     }
     wake();
   };
 
-  return <div className={`app view-${view} ${detail ? 'is-detail' : ''} ${ready ? 'is-ready' : ''} ${reduced ? 'reduced-motion' : ''}`}>
-    <a className="skip-link" href="#main">Skip to collection</a>
+  return <div className={`spatial-app ${detail?'is-detail':''} ${night?'is-night':''} ${ready?'is-ready':''}`} style={{ '--game-color': game.color } as CSSProperties} aria-busy={!ready}>
+    {!ready && <div className="startup-loading" role="status" aria-live="polite" aria-label="Loading the PLAY / BACK spatial exhibition"><div className="startup-loading__content" aria-hidden="true"><span className="startup-loading__disc"/><span className="startup-loading__name">PLAY / BACK</span><span className="startup-loading__label">LOADING THE SPATIAL EXHIBITION</span></div></div>}
+    <a className="skip-link" href="#artifact-controls">Skip to artifact controls</a>
+    <div className="atmosphere" aria-hidden="true"><img key={game.id} src={media[game.id][0].src} alt=""/><div/></div>
     <header className="site-header">
-      <button className="brand" aria-label="PLAY BACK home" onClick={() => changeView('collection')}>
-        <span className="brand-disc"><span /></span><span>PLAY<span className="brand-slash">/</span>BACK<span className="brand-trademark">®</span></span>
-      </button>
-      <div className="header-caption">AN ORIGINAL PLAYSTATION ARCHIVE</div>
-      <nav aria-label="Main navigation">
-        <button className={view === 'collection' ? 'nav-link active' : 'nav-link'} aria-current={view === 'collection' ? 'page' : undefined} onClick={() => changeView('collection')}>Collection<span className="nav-count">06</span></button>
-        <button className={view === 'index' ? 'nav-link active' : 'nav-link'} aria-current={view === 'index' ? 'page' : undefined} onClick={() => changeView('index')}>Index</button>
-        <button className={view === 'about' ? 'nav-link active' : 'nav-link'} aria-current={view === 'about' ? 'page' : undefined} onClick={() => changeView('about')}>About<ArrowUpRight size={12}/></button>
-      </nav>
-      <button className={`sound-button ${sound ? 'sound-on' : ''}`} aria-label={sound ? 'Turn sound off' : 'Turn sound on'} aria-pressed={sound} onClick={() => { setSound(!sound); playTone('select', !sound); }}>{sound ? <Volume2 size={16}/> : <VolumeX size={16}/>}<span>SOUND {sound ? 'ON' : 'OFF'}</span></button>
+      <button className="brand" aria-label="PLAY BACK collection" onClick={closeDetail}><span className="brand-disc"/><span>PLAY / BACK<sup>®</sup></span></button>
+      <span className="header-center">AN EXHIBITION OF PLAY<span>1995 — 2000</span></span>
+      <nav aria-label="Main navigation"><button onClick={e=>openPanel('index',e.currentTarget)}><Grid2X2 size={14}/><span>Collection</span><sup>{String(games.length).padStart(2, '0')}</sup></button><button onClick={e=>openPanel('about',e.currentTarget)}>About</button><button className="sound-button" aria-label={sound?'Turn sound off':'Turn sound on'} aria-pressed={sound} onClick={()=>{setSound(!sound);playTone('select',!sound);}}>{sound?<Volume2 size={17}/>:<VolumeX size={17}/>}</button></nav>
     </header>
-
-    <main id="main" className="main" tabIndex={-1}>
-      {view === 'collection' && <>
-        <div className="hero-copy" aria-hidden={detail} inert={detail}>
-          <div className="hero-title-wrap"><h1 ref={pageHeading} tabIndex={-1}>PLAY<span className="title-slash">/</span>BACK<span className="title-star">®</span></h1><span className="title-caption">SMALL DISCS. ENTIRE WORLDS.</span></div>
-          <div className="hero-aside"><span className="edition"><i/> THE FIRST GENERATION, REVISITED</span><p>Before everything was a download,<br/>it was something you could hold.</p><span className="hero-years">1995—1998 <span>VOL. 01</span></span></div>
-        </div>
-        {detail && <div className="detail-topline"><button ref={closeButton} className="text-button" onClick={closeDetail}><ArrowLeft size={16}/> Back to collection</button><span>ARTIFACT {number(active)} / 06</span><button className="icon-button detail-x" onClick={closeDetail} aria-label="Close inspection"><X size={20}/></button></div>}
-
-        <div className="gallery-stage" ref={stage} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={event => release(event)} onPointerCancel={event => release(event, true)} onPointerLeave={() => { if (!drag.current.down) { scene.current.pointerX = 0; scene.current.pointerY = 0; wake(); } }} aria-label={`${game.title} disc. Drag to browse; use the controls below for keyboard access.`}>
-          {!fallback && <Suspense fallback={null}><DiscScene state={scene} onReady={onReady} onError={onError}/></Suspense>}
-          {(!ready || fallback) && <div className={`fallback-scene ${detail ? 'fallback-detail' : ''}`}>
-            {[-1, 0, 1].map(offset => <div className={`fallback-disc offset-${offset} ${flipped && offset === 0 ? 'flipped' : ''}`} key={`${active}-${offset}`}>
-              {flipped && offset === 0 ? <div className="fallback-reverse"/> : <img src={discPath(games[wrap(active + offset)])} alt=""/>}
-            </div>)}
-          </div>}
-          <div className="stage-marker stage-marker-left"><Plus size={13}/><span>{detail ? 'PHYSICAL MEDIA / CD-ROM' : 'SIX OBJECTS. COUNTLESS MEMORIES.'}</span></div>
-          {!detail && <div className="stage-marker stage-marker-right"><span>PICK ONE UP</span><ArrowUpRight size={13}/></div>}
-          <div ref={cursor} className="disc-cursor"><span className="cursor-rest">{detail ? 'TURN' : 'PICK UP'}<ArrowUpRight size={15}/></span><span className="cursor-drag"><MoveHorizontal size={22}/></span></div>
-          {!detail && <div className="gallery-side-label left" aria-hidden="true">{games[wrap(active-1)].short}<span>{games[wrap(active-1)].year}</span></div>}
-          {!detail && <div className="gallery-side-label right" aria-hidden="true">{games[wrap(active+1)].short}<span>{games[wrap(active+1)].year}</span></div>}
-        </div>
-
-        {detail ? <>
-          <section className="detail-copy" aria-label={`About ${game.title}`} key={game.id}>
-            <div className="detail-title-row"><span className="catalog-tag">{game.year}</span><span>{game.genre}</span></div>
-            <h1>{game.title}</h1>
-            <p className="detail-quote">{game.quote}</p>
-            <p className="detail-description">{game.description}</p>
-            <dl className="metadata"><div><dt>DEVELOPER</dt><dd>{game.developer}</dd></div><div><dt>EDITION ON DISPLAY</dt><dd>{game.region}</dd></div><div><dt>CATALOG NO.</dt><dd>{game.serial}</dd></div><div><dt>FORMAT</dt><dd>PlayStation CD-ROM</dd></div></dl>
-            <p className="memory"><span>IN THE MEMORY CARD</span>{game.memory}</p>
-          </section>
-          <div className="inspection-controls"><button className={`flip-button ${flipped ? 'is-flipped' : ''}`} onClick={flip} aria-pressed={flipped}><RotateCw size={16}/>{flipped ? 'Show artwork' : 'Turn it over'}<kbd>F</kbd></button><span>{flipped ? 'THE BLACK DISC. YOU REMEMBER.' : 'MOVE TO CATCH THE LIGHT'}</span></div>
-          <div className="detail-bottom"><span>HANDLE WITH MEMORIES.</span><button className="next-artifact" onClick={() => step(1)}>Next artifact <strong>{games[wrap(active+1)].short}</strong><ArrowRight size={18}/></button></div>
-        </> : <>
-          <section className="selection-bar" aria-label="Selected game">
-            <div className="browse-hint"><MoveHorizontal size={19}/><span>DRAG TO EXPLORE<br/><span>OR USE YOUR ARROW KEYS</span></span></div>
-            <div className="selected-game" aria-live="polite" aria-atomic="true" key={game.id}><div className="selected-meta"><span className="catalog-tag">{number(active)} / 06</span><span>{game.year}</span><span className="meta-dot"/>{game.developer}</div><h2>{game.title}</h2><button className="inspect-button" ref={inspectButton} onClick={() => openGame()}>Explore the artifact<ArrowUpRight size={15}/></button></div>
-            <div className="carousel-arrows"><button className="arrow-button" onClick={() => step(-1)} aria-label="Previous game"><ArrowLeft size={21}/></button><button className="arrow-button" onClick={() => step(1)} aria-label="Next game"><ArrowRight size={21}/></button></div>
-          </section>
-          <div className="collection-rail" aria-label="Choose a game">{games.map((item, i) => <button key={item.id} className={`rail-item ${active === i ? 'selected' : ''}`} aria-label={`Select ${item.title}`} aria-pressed={active === i} onClick={() => navigate(i)}><span>{number(i)}</span><span className="rail-name">{item.short}</span><span className="rail-mark"/></button>)}</div>
-        </>}
+    <main className="exhibition" aria-label="Interactive PlayStation disc collection">
+      <div className="exhibit-note"><span className="live-dot"/>{detail?'THE ARTIFACT, UP CLOSE':'SMALL DISCS. ENTIRE WORLDS.'}</div>
+      <div className="exhibit-number" aria-hidden="true"><span>{number(active)}</span><i>/ {String(games.length).padStart(2, '0')}</i></div>
+      {detail && <button ref={closeButton} className="back-button" onClick={closeDetail}><ArrowLeft size={15}/> Back to the collection</button>}
+      <div className="gallery-stage" ref={stage} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={e=>release(e)} onPointerCancel={e=>release(e,true)} onPointerLeave={e=>{e.currentTarget.dataset.pointer='false';scene.current.hovering=false;if(!drag.current.down){scene.current.pointerX=0;scene.current.pointerY=0;e.currentTarget.style.setProperty('--pointer-x','0%');e.currentTarget.style.setProperty('--pointer-y','0%');}wake();}}>
+        {!fallback && <Suspense fallback={null}><DiscScene state={scene} onReady={onReady} onError={onError}/></Suspense>}
+        {(!ready||fallback) && <div className={`fallback-scene ${detail?'fallback-detail':''}`}>{[-1,0,1].map(offset=><div className={`fallback-disc offset-${offset}`} key={`${active}-${offset}`}>{flipped&&offset===0?<div className="fallback-reverse"/>:<img src={discPath(games[wrap(active+offset)])} alt=""/>}</div>)}</div>}
+        <div className="disc-cursor" ref={cursor}><span>{detail?'TURN':'INSPECT'}<Plus size={12}/></span><i><MoveHorizontal size={20}/></i></div>
+      </div>
+      <div className="object-annotation" aria-hidden="true"><span className="annotation-line"/><span>Ø 120 MM<br/>A WORLD YOU COULD HOLD.</span></div>
+      <button className="light-switch" onClick={()=>{setNight(!night);scene.current.night=!night;wake();}} aria-label={night?'Switch to studio lighting':'Switch to after-hours lighting'} aria-pressed={night}>{night?<Moon size={15}/>:<Sun size={15}/>}<span>{night?'AFTER HOURS':'STUDIO LIGHT'}<small>CHANGE THE ATMOSPHERE</small></span><i/></button>
+      {!detail ? <>
+        <section id="artifact-controls" className="artifact-caption" tabIndex={-1} aria-live="polite"><div className="artifact-id"><span>{game.year}</span><i/>{game.developer}<span className="catalog-id">{game.serial}</span></div><h1 key={game.id}>{game.title}</h1><div className="artifact-actions"><button ref={inspectButton} className="inspect-action" onClick={()=>openGame()}>Inspect the disc<ArrowUpRight size={15}/></button><button ref={worldButton} className="world-action" onClick={enterWorld}><Play size={11} fill="currentColor"/>Enter its world</button></div></section>
+        <div className="browse-controls"><span><MoveHorizontal size={15}/> DRAG TO DISCOVER</span><div><button aria-label="Previous game" onClick={()=>step(-1)}><ArrowLeft size={20}/></button><button aria-label="Next game" onClick={()=>step(1)}><ArrowRight size={20}/></button></div></div>
+      </> : <>
+        <section id="artifact-controls" className="detail-copy" key={game.id} tabIndex={-1} aria-label={`About ${game.title}`}><span className="detail-serial">{game.region}<i/>{game.serial}</span><h1>{game.title}</h1><p>{game.description}</p><dl><div><dt>RELEASE</dt><dd>{game.year}</dd></div><div><dt>STUDIO</dt><dd>{game.developer}</dd></div><div><dt>GENRE</dt><dd>{game.genre}</dd></div></dl><button ref={worldButton} className="world-preview" onClick={enterWorld}><img src={media[game.id][0].src} alt=""/><span><Play size={18} fill="currentColor"/>Enter its world<ArrowUpRight size={18}/></span></button><span className="preview-caption">ORIGINAL CAPTURES & ARCHIVAL FILMS</span></section>
+        <div className="inspection-controls"><button className="flip-button" aria-pressed={flipped} onClick={flip}><RotateCw size={16}/>{flipped?'Show the artwork':'Turn it over'}<kbd>F</kbd></button><span>{flipped?'THE BLACK DISC. YOU REMEMBER.':'MOVE TO CATCH THE LIGHT'}</span></div>
       </>}
-
-      {view === 'index' && <section className="index-view">
-        <div className="section-heading"><h1 ref={pageHeading} tabIndex={-1}>THE COLLECTION<span>(06)</span></h1><p>A few discs that changed everything.<br/>Every one worth another look.</p></div>
-        <div className="index-table"><div className="index-table-head"><span>ARTIFACT</span><span>TITLE</span><span>STUDIO</span><span>YEAR</span><span/></div>
-          {games.map((item, i) => <button className="index-row" key={item.id} onClick={() => openGame(i)}><span className="index-number">{number(i)}<img src={discPath(item)} alt="" loading="eager"/></span><span className="index-title">{item.title}<span>{item.genre}</span></span><span className="index-studio">{item.developer}</span><span className="index-year">{item.year}</span><ArrowUpRight size={24}/></button>)}
-        </div><div className="index-bottom"><Symbols/><span>THE ORIGINALS NEVER GET OLD.</span><button className="text-button" onClick={() => changeView('collection')}><Disc3 size={16}/> Back to the discs</button></div>
-      </section>}
-
-      {view === 'about' && <section className="about-view">
-        <div className="about-top"><span>A LOVE LETTER TO PHYSICAL PLAY.</span><Symbols/></div>
-        <h1 ref={pageHeading} tabIndex={-1}>YOU HAD<br/>TO BE <span>THERE.</span></h1>
-        <div className="about-content"><div className="about-disc"><span className="about-disc-label">PLAY / BACK<br/><small>MEMORY NEVER EXPIRES.</small></span><span className="about-hole"/><span className="about-disc-bottom">1994 — FOREVER</span></div><div className="about-story"><p className="about-lead">The click of a jewel case.<br/>The black underside of a disc.<br/>That sound when it all began.</p><p>Before instant libraries and endless updates, a whole world fit in the palm of your hand. You knew the scratches on your favourite disc. You knew which friend still had it.</p><p>PLAY / BACK is a small, independent celebration of that feeling. Six games from the original PlayStation era, remembered through the objects that carried them.</p><button className="about-cta" onClick={() => changeView('collection')}>Make a little time for the past.<ArrowUpRight size={25}/></button></div></div>
-        <div className="credits"><div><span>AN INDEPENDENT EXHIBITION</span><p>A fan-made archival tribute. Not affiliated with Sony Interactive Entertainment. All game artwork and trademarks belong to their respective owners.</p></div><div><span>ARTWORK & ARCHIVE</span><p>Disc scans courtesy of the <a href="https://psxdatacenter.com/" target="_blank" rel="noreferrer">PSX Data Center<ArrowUpRight size={12}/></a>. Displayed as historical artifacts; no games or downloads are provided.</p></div><button className="text-button" onClick={() => changeView('index')}>View all six artifacts<Grid2X2 size={16}/></button></div>
-      </section>}
     </main>
-
-    <footer className="site-footer"><span><i className="status-dot"/>{!ready && view === 'collection' ? 'TAKING THE DISCS OFF THE SHELF' : 'A LOVE LETTER TO THE ORIGINAL PLAYSTATION'}</span><span className="footer-center">EST. 1994 <span>—</span> NEVER FORGOTTEN</span><Symbols/></footer>
+    <footer className="collection-footer"><span className="footer-note">{ready?'PHYSICAL MEDIA. LASTING MEMORIES.':'TAKING THE DISCS OFF THE SHELF…'}</span><div className="disc-dock" aria-label="Choose a game">{games.map((item,index)=><button key={item.id} className={active===index?'active':''} onClick={()=>navigate(index)} aria-label={`Select ${item.title}`} aria-pressed={active===index}><img src={discPath(item)} alt=""/><span>{number(index)}</span><span className="dock-label" aria-hidden="true">{item.title}</span></button>)}</div><span className="footer-end">HANDLE WITH MEMORIES.<Aperture size={16}/></span></footer>
+    {world && <Suspense fallback={<div className="world-loading">Opening the memory room…</div>}><MemoryViewer key={game.id} game={game} nextGame={games[wrap(active+1)]} reduced={reduced} onClose={() => leaveWorld()} onNext={() => leaveWorld(wrap(active+1))}/></Suspense>}
+    {panel && <dialog ref={panelDialog} className="archive-panel" onCancel={e=>{e.preventDefault();closePanel();}} aria-labelledby="panel-title"><div className="panel-top"><span>PLAY / BACK — SPATIAL EDITION</span><button aria-label="Close panel" onClick={closePanel}><X size={22}/></button></div>{panel==='index'?<><h2 id="panel-title">{games.length === 11 ? 'Eleven' : games.length} discs.<br/>Countless memories.</h2><div className="artifact-index">{games.map((item,index)=><button key={item.id} onClick={()=>{closePanel();openGame(index);}}><span>{number(index)}</span><img src={discPath(item)} alt=""/><span>{item.title}<small>{item.developer} / {item.year}</small></span><ArrowUpRight size={20}/></button>)}</div></>:<><h2 id="panel-title">You can still<br/>feel it.</h2><div className="about-art" aria-hidden="true"><img src={discPath(games[4])} alt=""/><img src={discPath(games[0])} alt=""/><img src={discPath(games[1])} alt=""/></div><div className="about-copy"><p>The click of a jewel case. The black underside of a disc. That sound when it all began.</p><p>PLAY / BACK is an independent celebration of the original PlayStation — and the small, physical objects that carried entire worlds.</p><p className="credits">A fan-made exhibition, not affiliated with Sony Interactive Entertainment. Game artwork and trademarks belong to their respective owners. Disc scans and original gameplay captures are sourced from <a href="https://psxdatacenter.com/" target="_blank" rel="noreferrer">PSX Data Center</a>. No games or downloads are provided.</p></div></>}</dialog>}
   </div>;
 }

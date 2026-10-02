@@ -5,12 +5,9 @@ A React, TypeScript and Three.js exhibition of eleven original PlayStation discs
 ## Run locally
 
 ```sh
-cd spatial-edition
 npm install
 npm run dev
 ```
-
-If your terminal is already inside this folder, omit the first command.
 
 Open `http://localhost:5174`. The development server uses strict port 5174.
 
@@ -42,14 +39,14 @@ Disc textures, thirty-three game captures, eleven archival films, their posters 
 
 Create a Pages project from this repository with these settings:
 
-- Root directory: `spatial-edition`
+- Root directory: repository root (leave the Root directory field at its default)
 - Build command: `npm run build`
 - Build output directory: `dist`
 - Node.js: pinned to `22.16.0` in `.node-version`
 - Environment variables: none required
 
-The root directory matters because the repository root contains a separate edition. The collection uses hash-based navigation, so it needs no server-side routes or Functions. All individual assets are below Pages’ 25 MiB per-file limit.
+The spatial edition now lives at the repository root, so use Cloudflare's default root directory. The collection uses hash-based navigation, so it needs no server-side routes or Functions. All individual assets are below Pages’ 25 MiB per-file limit.
 
 Before making the exhibition public, obtain permission for the locally hosted game footage, captures and artwork from their respective rights holders. Source and provenance notes identify where the assets came from; they do not grant distribution rights.
 
-See [DESIGN.md](DESIGN.md), [.impeccable/design.json](.impeccable/design.json) and the [surface brief](docs/surface.md) for the current implemented direction. This folder is the standalone spatial edition; the parent project's original edition is separate.
+See [DESIGN.md](DESIGN.md), [.impeccable/design.json](.impeccable/design.json) and the [surface brief](docs/surface.md) for the current implemented direction. This repository contains the standalone spatial edition at its root.
